@@ -8,16 +8,15 @@ public class Sesion {
 	private String horaInicio;
 	private String horaFin;
 	private double precio;
-	private int numEspctTotal;
 	
-	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio, int numEspctTotal) {
+	
+	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio) {
 		
 		this.idSesion = idSesion;
 		this.fecha = fecha;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 		this.precio = precio;
-		this.numEspctTotal = numEspctTotal;
 	}
 
 	public String getIdSesion() {
@@ -60,18 +59,12 @@ public class Sesion {
 		this.precio = precio;
 	}
 
-	public int getNumEspctTotal() {
-		return numEspctTotal;
-	}
-
-	public void setNumEspctTotal(int numEspctTotal) {
-		this.numEspctTotal = numEspctTotal;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "Sesion \nIdSesion:" + idSesion + "\nFecha:" + fecha + "\nHoraInicio:" + horaInicio + "\nHoraFin:"
-				+ horaFin + "\nPrecio:" + precio + "\nNumEspectTotal:" + numEspctTotal;
+				+ horaFin + "\nPrecio:" + precio ;
 	}
 	
 	
