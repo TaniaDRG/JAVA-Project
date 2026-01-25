@@ -4,11 +4,18 @@ public class Sala {
 	
 	private int idSala;
 	private String nomSala;
+	private Sesion sesion; //me traigo el obj sesion a este obj sala
 	
 	
-	public Sala(int idSala, String nomSala) {
+	
+	public Sala() {
+	}
+
+
+	public Sala(int idSala, String nomSal, Sesion session) {
 		this.idSala = idSala;
 		this.nomSala = nomSala;
+		this.sesion = session;
 	}
 
 
@@ -35,6 +42,22 @@ public class Sala {
 	@Override
 	public String toString() {
 		return "Sala \nIdSala:" + idSala + "\nNomSala:" + nomSala;
+	}
+
+
+	/**
+	 * @return the sesion
+	 */
+	public Sesion getSesion() {
+		return sesion;
+	}
+
+
+	/**
+	 * @param sesion the sesion to set
+	 */
+	public void setSesion(Sesion sesion) {
+		this.sesion = sesion;
 	}
 	
 	
