@@ -2,11 +2,13 @@ package controlador;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import modelo.Cliente;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Sesion;
@@ -55,19 +57,24 @@ public class controladorBD {
 		return Conexioncerrada;
 	}
 
-	public ArrayList<Sesion> buscarSesionesYPeliculas(String where, String groupBy) {
+	public ArrayList<Sesion> buscarSesionesYPeliculas(String where, String groupBy, String orderBy) {
 
 		ArrayList<Sesion> listaSesionesYPeliculas = new ArrayList<Sesion>();
-		String query = "SELECT s.IdSesion, s.Fecha, s.HoraInicio,  s.HoraFin, s.Precio, s.IdSala, "
-				+ "P.IdPeli, p.NomPeli, P.genero, P.duracion, P.precio "
+		String query = "SELECT S.IdSesion, S.Fecha, S.HoraInicio,  S.HoraFin, S.Precio, S.IdSala, "
+				+ "P.IdPeli, P.NomPeli, P.genero, P.duracion, P.precio "
 				+ "FROM sesion S JOIN pelicula P ON S.IdPeli = P.IdPeli ";
-		if(where != null && !where.isEmpty()) {
+
+		if (where != null && !where.isEmpty()) {
 			query = query + where;
 		}
-		if(groupBy != null && !groupBy.isEmpty()) {
+		if (groupBy != null && !groupBy.isEmpty()) {
 			query = query + " GROUP BY " + groupBy;
 		}
-		query = query + " ORDER BY S.Fecha ASC, S.HoraInicio ASC ";
+		if (orderBy != null && !orderBy.isEmpty()) {
+			query = query + " ORDER BY " + orderBy;
+			;
+		}
+
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -80,12 +87,16 @@ public class controladorBD {
 				sesionYPelicula.setHoraFin(resultado.getString(4));
 				sesionYPelicula.setPrecio(Double.parseDouble(resultado.getString(5)));
 				Sala sala = new Sala();
-				sesionYPelicula.setSala(sala); // Se crea el objeto sala para evitar error al guardar el idSala (error nullpointer)
+				sesionYPelicula.setSala(sala); // Se crea el objeto sala para evitar error al guardar el idSala (error
+												// nullpointer)
 				sesionYPelicula.getSala().setIdSala(Integer.parseInt(resultado.getString(6)));
 				Pelicula pelicula = new Pelicula();
 				sesionYPelicula.setPeli(pelicula);
 				sesionYPelicula.getPeli().setIdPeli(resultado.getString(7));
-				/*Abrir el objeto sesionYPelicula (tipo Sesion), luego abrir el objeto Pelicula y despues almacenar en setXXX el valor devuelto por la consulta*/
+				/*
+				 * Abrir el objeto sesionYPelicula (tipo Sesion), luego abrir el objeto Pelicula
+				 * y despues almacenar en setXXX el valor devuelto por la consulta
+				 */
 				sesionYPelicula.getPeli().setNomPeli(resultado.getString(8));
 				sesionYPelicula.getPeli().setGenero(resultado.getString(9));
 				sesionYPelicula.getPeli().setDuracion(Integer.parseInt(resultado.getString(10)));
@@ -94,6 +105,7 @@ public class controladorBD {
 			}
 
 			consulta.close();
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,6 +135,42 @@ public class controladorBD {
 			e.printStackTrace();
 		}
 		return listaSalas;
+	}
+
+	public ArrayList<Cliente> buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
+
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+		String query = "SELECT DNI, NomCliente, Apellido, Correo, Contraseña FROM Cliente WHERE DNI = " + dniUsuario
+				+ "AND Contraseña = " + contrasenaUsuario + "'";
+
+		try {
+			// PreparedStatement evita SQL Injection
+			PreparedStatement consulta = conexion.prepareStatement(query);
+			consulta.setString(1, dniUsuario);
+			consulta.setString(2, contrasenaUsuario);
+
+			ResultSet resultado = consulta.executeQuery();
+
+			while (resultado.next()) {
+				Cliente clienteBuscado = new Cliente();
+				clienteBuscado.setDNI(resultado.getString(1));
+				clienteBuscado.setNomCliente(resultado.getString(2));
+				clienteBuscado.setApellido(resultado.getString(3));
+				clienteBuscado.setCorreo(resultado.getString(4));
+				clienteBuscado.setContraseña(resultado.getString(5));
+				clientes.add(clienteBuscado);
+			}
+
+			resultado.close();
+			consulta.close();
+
+		} catch (SQLException e) {
+			System.out.println("Error al iniciar sesión: " + e.getMessage());
+		}
+
+		return clientes;
+
 	}
 
 }

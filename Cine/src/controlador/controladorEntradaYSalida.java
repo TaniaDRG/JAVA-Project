@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import vista.Principal;
+
 public class controladorEntradaYSalida {
 
 	private Scanner sc;
@@ -31,7 +33,7 @@ public class controladorEntradaYSalida {
 		}
 	}
 
-	public int numeroDeEspectadores() {// hago esto generico????????????? ->NO
+	public int numeroDeEspectadores() {// generico
 		try {
 			int eleccion = Integer.valueOf(sc.nextLine());
 
@@ -48,7 +50,7 @@ public class controladorEntradaYSalida {
 
 	}
 
-	public int continuarProcesoCompra() {
+	public int continuarProcesoCompra() {// BORRARRRRRRRRRRRRRRRRRR
 
 		try {
 			int continuar = Integer.valueOf(sc.nextLine());
@@ -65,8 +67,41 @@ public class controladorEntradaYSalida {
 		return -1;
 
 	}
+
+	/** Método genérico para leer un número dentro de un rango. **/
+	public int leerOpciones(int min, int max) {
+
+		try {
+
+			int opcion = Integer.valueOf(sc.nextLine());
+			if (opcion < min || opcion > max) {
+				System.out.println("Debe elegir un número entre " + min + " y " + max);
+				return -1;
+			}
+			return opcion;
+		} catch (NumberFormatException e) {
+			System.out.println("Error: se esperaba un número.");
+			return -1;
+		}
+	}
 	
-	
+		
 	
 
+	public void recogerDatosUsuario() {
+		// TODO Auto-generated method stub
+		String dniUsuario;
+		String contraseñaUsuario;
+		
+		System.out.println("Escribe tu DNI");
+		dniUsuario = sc.nextLine();
+		
+		System.out.println("Escribe tu contraseña");
+		contraseñaUsuario = sc.nextLine();
+		
+		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
+		//si no estan vacios 
+	
+	}
+	
 }
