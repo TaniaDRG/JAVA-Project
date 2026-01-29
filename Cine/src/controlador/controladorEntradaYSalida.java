@@ -84,24 +84,75 @@ public class controladorEntradaYSalida {
 			return -1;
 		}
 	}
-	
-		
-	
 
-	public void recogerDatosUsuario() {
-		// TODO Auto-generated method stub
+	public void recogerDatosUsuarioExistente() {
+
 		String dniUsuario;
 		String contraseñaUsuario;
-		
+
 		System.out.println("Escribe tu DNI");
-		dniUsuario = sc.nextLine();
-		
+		dniUsuario = sc.nextLine().trim();
+		if (dniUsuario.isEmpty()) {
+			System.out.println("Error, DNI incorrecto.");
+			return;
+		}
+
 		System.out.println("Escribe tu contraseña");
-		contraseñaUsuario = sc.nextLine();
-		
+		contraseñaUsuario = sc.nextLine().trim();
+		if (contraseñaUsuario.isEmpty()) {
+			System.out.println("Error, contraseña incorrecta.");
+			return;
+		}
+
 		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
-		//si no estan vacios 
-	
+		
+
 	}
+
 	
+	public void recogerDatosNuevoUsuario() {
+
+		String dni, nombre, apellido, correo, contrasena;
+
+		System.out.println("====== NUEVO USUARIO ======");
+
+		System.out.print("DNI: ");
+		dni = sc.nextLine().trim();
+
+		if (dni.isEmpty() || dni.length() != 9) {
+			System.out.println("Error: DNI incorrecto.");
+			return;
+		}
+
+		System.out.print("Nombre: ");
+		nombre = sc.nextLine().trim();
+		if (nombre.isEmpty()) {
+			System.out.println("Error, el nombre es obligatorio.");
+			return;
+		}
+
+		System.out.print("Apellido: ");
+		apellido = sc.nextLine().trim();
+		if (apellido.isEmpty()) {
+			System.out.println("Error, el apellido es obligatorio.");
+			return;
+		}
+
+		System.out.print("Correo electrónico: ");
+		correo = sc.nextLine().trim();
+		if (correo.isEmpty() || !correo.contains("@")) {
+			System.out.println("Error, el correo electrónico no es válido.");
+			return;
+		}
+
+		System.out.print("Contraseña: ");
+		contrasena = sc.nextLine().trim();
+		if (contrasena.isEmpty()) {
+			System.out.println("Error: la contraseña es obligatoria.");
+			return;
+		}
+
+		Principal.registrarse(dni, nombre, apellido, correo, contrasena);
+	}
+
 }

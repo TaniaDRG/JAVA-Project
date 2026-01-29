@@ -115,8 +115,8 @@ public class controladorBD {
 
 	}
 
-	public ArrayList<Sala> buscarSalas(Sesion sesion) {
-		String query = "SELECT * FROM SALA WHERE IDSALA = " + sesion.getSala().getIdSala();
+	public ArrayList<Sala> buscarSalas(Sesion sesion) {// ALGO FALLA MIRAR
+		String query = "SELECT * FROM Sala WHERE IdSala = " + sesion.getSala().getIdSala();
 		ArrayList<Sala> listaSalas = new ArrayList<Sala>();
 		try {
 			Statement consulta = conexion.createStatement();
@@ -140,15 +140,18 @@ public class controladorBD {
 	public ArrayList<Cliente> buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
 
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-
-		String query = "SELECT DNI, NomCliente, Apellido, Correo, Contraseña FROM Cliente WHERE DNI = " + dniUsuario
-				+ "AND Contraseña = " + contrasenaUsuario + "'";
+		//defino la estructura de la query pues los ? son el espacio que reservo para 
+		String query = "SELECT DNI, NomCliente, Apellido, Correo " 
+						+ "FROM Cliente " 
+						+ "WHERE DNI = ? "
+						+ "AND Contraseña = AES_ENCRYPT(?, 'elorrieta')";
 
 		try {
 			// PreparedStatement evita SQL Injection
 			PreparedStatement consulta = conexion.prepareStatement(query);
-			consulta.setString(1, dniUsuario);
-			consulta.setString(2, contrasenaUsuario);
+			// relleno los ? (empiezan en 1, NO en 0)
+			consulta.setString(1, dniUsuario);// primer ?
+			consulta.setString(2, contrasenaUsuario);// segundo ?
 
 			ResultSet resultado = consulta.executeQuery();
 
@@ -158,7 +161,7 @@ public class controladorBD {
 				clienteBuscado.setNomCliente(resultado.getString(2));
 				clienteBuscado.setApellido(resultado.getString(3));
 				clienteBuscado.setCorreo(resultado.getString(4));
-				clienteBuscado.setContraseña(resultado.getString(5));
+				// no guardo la contraseña porque nunca la necesito una vez validado el login
 				clientes.add(clienteBuscado);
 			}
 
@@ -166,10 +169,35 @@ public class controladorBD {
 			consulta.close();
 
 		} catch (SQLException e) {
-			System.out.println("Error al iniciar sesión: " + e.getMessage());
+			System.out.println("Error al iniciar sesión: " + e.getMessage());//? no sé para que es:+ e.getMessage()
+			
 		}
 
 		return clientes;
+
+	}
+
+	public boolean insertarCliente(Cliente nuevoCliente) {
+
+		String query = "INSERT INTO Cliente (DNI, NomCliente, Apellido, Correo, Contraseña) " 
+						+ "VALUES (?,?,?,?, AES_ENCRYPT(?, 'elorrieta'))";
+
+		try {
+			PreparedStatement consulta = conexion.prepareStatement(query);
+			consulta.setString(1, nuevoCliente.getDNI());
+			consulta.setString(2, nuevoCliente.getNomCliente());
+			consulta.setString(3, nuevoCliente.getApellido());
+			consulta.setString(4, nuevoCliente.getCorreo());
+			consulta.setString(5, nuevoCliente.getContraseña());
+
+			consulta.executeUpdate();
+			consulta.close();
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Error al insertar cliente (DNI o correo duplicado)");
+			return false;
+		}
 
 	}
 

@@ -210,7 +210,7 @@ public class Principal {
 
 	public static void mostrarResumenDeCompra() {
 
-		System.out.println("\n=====RESUMEN DE COMPRA======: ");
+		System.out.println("\n===== RESUMEN DE COMPRA ======");
 
 		double precioTotalCompra = 0.0;
 		double descuentoAplicado = 0.0;
@@ -237,8 +237,8 @@ public class Principal {
 		System.out.println("Descuento: " + String.format("%.2f", descuentoAplicado) + "€");
 
 		double totalAPagar = precioTotalCompra - descuentoAplicado;
-		System.out.println("\nTotal a pagar: " + String.format("%.2f", totalAPagar) + "€");
-		
+		System.out.println("Total a pagar: " + String.format("%.2f", totalAPagar) + "€");
+
 		confirmarCompra();
 	}
 
@@ -246,7 +246,7 @@ public class Principal {
 
 		int comprar;
 		do {
-			System.out.println("Desear realizar la compra:");
+			System.out.println("\nDesear confirmar la compra:");
 			System.out.println("1. Si");
 			System.out.println("2. No");
 			comprar = controladorES.leerOpciones(1, 2);
@@ -263,53 +263,111 @@ public class Principal {
 
 	}
 
-	private static void mostrarMenuOpcionesDeLogin() {
+	public static void mostrarMenuOpcionesDeLogin() {
+
 		int opcion;
+
 		do {
+			System.out.println("\n======== LOGIN ========");
 			System.out.println("1 - Inicie Sesión");
 			System.out.println("2 - Acceder como invitado");
 			System.out.println("3 - Registrarse");
 			System.out.println("4 - Cancelar compra");
 			opcion = controladorES.leerOpciones(1, 4);
 
-		} while (opcion != 1 && opcion != 2 && opcion != 3 && opcion != 4);
+		} while (opcion == -1);
 
 		switch (opcion) {
 		case 1:
-			controladorES.recogerDatosUsuario();
+			controladorES.recogerDatosUsuarioExistente();
 			break;
 		case 2:
+			accedeComoInvitado();
 			break;
 		case 3:
-
+			controladorES.recogerDatosNuevoUsuario();
 			break;
 		case 4:
 			resetearCarrito();
 			break;
 		}
 	}
-	
-	public static void iniciarSesion(String dniUsuario,String contraseñaUsuario) {
-		
+
+	public static void iniciarSesion(String dniUsuario, String contraseñaUsuario) {
+
 		ArrayList<Cliente> existeCliente = controlador.buscarClienteBD(dniUsuario, contraseñaUsuario);
-		
-		for (Cliente cliente1 : existeCliente) {
-			
-			if (cliente1.getDNI()!= null) {
-			System.out.println("Bienvenido, " + " - " + cliente1.getNomCliente());
-		
-		 
-		    } else {
-		        System.out.println("DNI o contraseña incorrectos.");
-		    }
+		/* guardo el resultado de la busqueda del usuario en:existeCliente */
+
+		if (existeCliente.isEmpty()) {
+			System.out.println("DNI o contraseña incorrectos.");
+			mostrarMenuOpcionesDeLogin();/// no se cómo lo devuelvo allá sin hacer esto
+		} else {
+			Cliente cliente = existeCliente.get(0);
+			System.out.println("Bienvenida/o " + cliente.getNomCliente());
+			finalizarCompra();
 		}
 	}
-	
-		
-		
-	public static void resetearCarrito() {
-		// TODO Auto-generated method stub
 
+	public static void accedeComoInvitado() {
+
+		String dniInvitado = "Invitado1";
+		String contrasenaInvitado = "prisma";
+
+		ArrayList<Cliente> existeCliente = controlador.buscarClienteBD(dniInvitado, contrasenaInvitado);
+
+		// No se si poner esto porque el usuario Invitado siempre va a estar en la base
+		// de datos y si entra en este IF no tengo a donde devolverlo/enviarlo
+		if (existeCliente.isEmpty()) {
+			System.out.println("No se pudo acceder como invitado.");
+
+		} else {
+			Cliente invitado = existeCliente.get(0);
+			System.out.println("Acceso como invitado.");
+			finalizarCompra();
+
+		}
+	}
+
+	public static void registrarse(String dni, String nombre, String apellido, String correo, String contrasena) {// voy
+																													// a
+																													// crear
+																													// el
+																													// objeto
+																													// Cliente
+																													// (datos
+																													// OK)
+
+		Cliente nuevoCliente = new Cliente();
+		nuevoCliente.setDNI(dni);
+		nuevoCliente.setNomCliente(nombre);
+		nuevoCliente.setApellido(apellido);
+		nuevoCliente.setCorreo(correo);
+		nuevoCliente.setContraseña(contrasena);
+
+		// Guardar en BD
+		boolean insertado = controlador.insertarCliente(nuevoCliente);
+
+		if (insertado) {
+			System.out.println("Usuario registrado correctamente.");
+			finalizarCompra();
+		} else {
+			System.out.println("Error al registrar el usuario.");// Cuándo va a haber un error aquí?
+			mostrarMenuOpcionesDeLogin();
+		}
+	}
+
+	public static void resetearCarrito() {
+
+		carritoTemporal.clear();
+		System.out.println("Compra cancelada");
+		mostrarMenu();
+	}
+
+	
+	private static void finalizarCompra() {
+
+		System.out.println("Compra realizada con éxito");
+		mostrarMenu();
 	}
 
 }
