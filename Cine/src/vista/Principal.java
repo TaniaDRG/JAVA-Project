@@ -371,9 +371,6 @@ public class Principal {
 		// mostrarMenu();
 	}
 
-	private static void guardarDatosEnBDCompra() {
-		// TODO Auto-generated method stub
 
-	}
 
 }
