@@ -8,17 +8,27 @@ public class Sesion {
 	private String horaInicio;
 	private String horaFin;
 	private double precio;
-	private int numEspctTotal;
+	private Pelicula peli;
+	private Sala sala;
 	
-	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio, int numEspctTotal) {
+	
+	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio, Pelicula peli, Sala sala) {
 		
 		this.idSesion = idSesion;
 		this.fecha = fecha;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 		this.precio = precio;
-		this.numEspctTotal = numEspctTotal;
+		this.peli = peli;
+		this.sala = sala;
 	}
+
+
+	public Sesion() {
+		
+	}
+
+
 
 	public String getIdSesion() {
 		return idSesion;
@@ -60,21 +70,34 @@ public class Sesion {
 		this.precio = precio;
 	}
 
-	public int getNumEspctTotal() {
-		return numEspctTotal;
+
+	public Pelicula getPeli() {
+		return peli;
 	}
 
-	public void setNumEspctTotal(int numEspctTotal) {
-		this.numEspctTotal = numEspctTotal;
+	
+	public void setPeli(Pelicula peli) {
+		this.peli = peli;
 	}
+	
+	
+	public Sala getSala() {
+		return sala;
+	}
+
+
+
+	public void setSala(Sala sala) {
+		this.sala = sala;
+	}
+
 
 	@Override
 	public String toString() {
 		return "Sesion \nIdSesion:" + idSesion + "\nFecha:" + fecha + "\nHoraInicio:" + horaInicio + "\nHoraFin:"
-				+ horaFin + "\nPrecio:" + precio + "\nNumEspectTotal:" + numEspctTotal;
+				+ horaFin + "\nPrecio:" + precio;
 	}
-	
-	
+
 
 	
 }

@@ -4,27 +4,35 @@ public class Compra {
 
 	
 	private int idCompra;
-	private int totalEntradas;
 	private String fecha;
 	private String hora;
 	private double precioTotal;
 	private double descuentoAplicado;
+	private Entrada entrada;
+	private Cliente cliente;
 	
 	
 	
 	
-	public Compra(int idCompra, int totalEntradas, String fecha, String hora, double precioTotal, double descuentoAplicado) {
+	public Compra(int idCompra, int totalEntradas, String fecha, String hora, double precioTotal, double descuentoAplicado, Entrada entrada, Cliente cliente ) {
 		this.idCompra = idCompra;
-		this.totalEntradas = totalEntradas;
 		this.fecha = fecha;
 		this.hora = hora;
 		this.precioTotal = precioTotal;
 		this.descuentoAplicado = descuentoAplicado;
+		this.entrada = entrada;
+		this.cliente = cliente;
+		
 	}
 	
 	
-	
-	
+
+	public Compra() {
+		
+	}
+
+
+
 	public int getIdCompra() {
 		return idCompra;
 	}
@@ -33,13 +41,7 @@ public class Compra {
 		this.idCompra = idCompra;
 	}
 	
-	public int getTotalEntradas() {
-		return totalEntradas;
-	}
-	
-	public void setTotalEntradas(int totalEntradas) {
-		this.totalEntradas = totalEntradas;
-	}
+
 	
 	public String getFecha() {
 		return fecha;
@@ -73,10 +75,35 @@ public class Compra {
 		this.descuentoAplicado = descuentoAplicado;
 	}
 	
+	
+
+	public Entrada getEntrada() {
+		return entrada;
+	}
+
+
+
+	public void setEntrada(Entrada entrada) {
+		this.entrada = entrada;
+	}
+	
+	
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "Compra \nIdCompra:" + idCompra + "\nTotalEntradas:" + totalEntradas + "\nFecha:" + fecha + "\nHora:" + hora + "\nPrecioTotal:" + precioTotal +
+		return "Compra \nIdCompra:" + idCompra + "\nFecha:" + fecha + "\nHora:" + hora + "\nPrecioTotal:" + precioTotal +
 				"\nDescuentoAplicado:" + descuentoAplicado;
 	}
+
 
 }

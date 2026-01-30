@@ -2,14 +2,14 @@ package modelo;
 
 public class Pelicula {
 	
-	private int idPeli;
+	private String idPeli;
 	private String nomPeli;
 	private String genero;
 	private int duracion;
 	private double precio;
 	
 	
-	public Pelicula(int idPeli, String nomPeli, String genero, int duracion, double precio) {
+	public Pelicula(String idPeli, String nomPeli, String genero, int duracion, double precio) {
 		this.idPeli = idPeli;
 		this.nomPeli = nomPeli;
 		this.genero = genero;
@@ -18,12 +18,18 @@ public class Pelicula {
 	}
 
 
-	public int getIdPeli() {
+	
+	public Pelicula() {
+		
+	}
+
+
+	public String getIdPeli() {
 		return idPeli;
 	}
 
 
-	public void setIdPeli(int idPeli) {
+	public void setIdPeli(String idPeli) {
 		this.idPeli = idPeli;
 	}
 

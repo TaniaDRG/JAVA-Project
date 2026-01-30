@@ -3,24 +3,27 @@ package modelo;
 public class Entrada {
 	
 	private int idEntrada;
-	private double precioSesion;
-	private int descuento;
-	private int numEntradas;
+	private double precioEntrada;
+	private double descuento;
+	private int numEspectadores;
+	private Sesion sesion;
 	
 	
 	
-	public Entrada (int idEntrada, double precioSesion, int descuento, int numEntradas) {
+	public Entrada (int idEntrada, double precioEntrada, double descuento, int numEspectadores, Sesion sesion) {
 		this.idEntrada = idEntrada;
-		this.precioSesion = precioSesion;
+		this.precioEntrada = precioEntrada;
 		this.descuento = descuento;
-		this.numEntradas = numEntradas;
+		this.numEspectadores = numEspectadores;
+		this.sesion = sesion;
 	}
 	
 	
 	
-	
-	
-	
+	public Entrada() {	
+	}
+
+
 	public int getIdEntrada() {
 		return idEntrada;
 	}
@@ -28,28 +31,44 @@ public class Entrada {
 		this.idEntrada = idEntrada;
 	}
 	public double getPrecioSesion() {
-		return precioSesion;
+		return precioEntrada;
 	}
-	public void setPrecioSesion(double precioSesion) {
-		this.precioSesion = precioSesion;
+	public void setPrecioSesion(double precioEntrada) {
+		this.precioEntrada = precioEntrada;
 	}
-	public int getDescuento() {
+	public double getDescuento() {
 		return descuento;
 	}
-	public void setDescuento(int descuento) {
+	public void setDescuento(double descuento) {
 		this.descuento = descuento;
 	}
 	public int getNumEntradas() {
-		return numEntradas;
+		return numEspectadores;
 	}
-	public void setNumEntradas(int numEntradas) {
-		this.numEntradas = numEntradas;
+	public void setNumEntradas(int numEspectadores) {
+		this.numEspectadores = numEspectadores;
 	}
+	
+	public Sesion getSesion() {
+		return sesion;
+	}
+
+
+
+	public void setSesion(Sesion sesion) {
+		this.sesion = sesion;
+	}
+	
+	
 	@Override
 	public String toString() {
-		return "Entrada \nIdEntrada:" + idEntrada + "\nPrecioSesion:" + precioSesion + "\nDescuento:" + descuento
-				+ "\nNumEntradas:" + numEntradas;
+		return "Entrada \nIdEntrada:" + idEntrada + "\nPrecioSesion:" + precioEntrada + "\nDescuento:" + descuento
+				+ "\nNumEntradas:" + numEspectadores;
 	}
+
+
+	
+
 	
 }
 

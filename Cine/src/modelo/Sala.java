@@ -4,11 +4,18 @@ public class Sala {
 	
 	private int idSala;
 	private String nomSala;
+	private Sesion sesion; //No lo estoy usando.. REVISAR
 	
 	
-	public Sala(int idSala, String nomSala) {
+	
+	public Sala() {
+	}
+
+
+	public Sala(int idSala, String nomSala, Sesion sesion) {
 		this.idSala = idSala;
 		this.nomSala = nomSala;
+		this.sesion = sesion;
 	}
 
 
@@ -35,6 +42,18 @@ public class Sala {
 	@Override
 	public String toString() {
 		return "Sala \nIdSala:" + idSala + "\nNomSala:" + nomSala;
+	}
+
+
+	
+	public Sesion getSesion() {
+		return sesion;
+	}
+
+
+	
+	public void setSesion(Sesion sesion) {
+		this.sesion = sesion;
 	}
 	
 	

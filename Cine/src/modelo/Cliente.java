@@ -25,6 +25,13 @@ public class Cliente {
 
 
 
+	public Cliente() {
+		
+	}
+
+
+
+
 	public String getDNI() {
 		return DNI;
 	}
