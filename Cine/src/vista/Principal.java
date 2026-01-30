@@ -23,88 +23,88 @@ public class Principal {
 		controladorES = new controladorEntradaYSalida();
 
 		controlador.iniciarConexion();
-		mostrarMenu();
+		mostrarMenuPelis();
 		controlador.cerrarConexion();
 	}
 
-	public static void mostrarMenu() {
+	public static void mostrarMenuPelis() {
 		System.out.println("Lista de peliculas: \n");
 
-		String where = " WHERE (S.Fecha > CURDATE() OR (S.Fecha = CURDATE() AND S.HoraInicio > CURTIME()))";
-		String groupBy = " P.NomPeli";
-		String orderBy = " MIN(timestamp(S.Fecha, S.HoraInicio)) asc ";
-		ArrayList<Sesion> listaPeliculasOrdenadas = controlador.buscarSesionesYPeliculas(where, groupBy, orderBy);
+		ArrayList<Pelicula> listaPeliculasOrdenadas = controlador.buacarPeliculas();
 
 		int cont = 1;
-		for (Sesion peliPorSesion : listaPeliculasOrdenadas) {
-			System.out.println(cont + " - " + peliPorSesion.getPeli().getNomPeli());
+
+		for (Pelicula peli : listaPeliculasOrdenadas) {
+			System.out.println(cont + " - " + peli.getNomPeli());
 			cont++;
 		}
 
-		int numElegido = 0;
+		int numElegido = -1;
 		do {
-			System.out.println("Elija una opcion: ");
+			System.out.println("Elija una pelicula: ");
 			numElegido = controladorES.elegirOpcion(listaPeliculasOrdenadas);
-		} while (numElegido == 0);
+		} while (numElegido == -1);
 
-		mostrarSesionesDeUnaPeli(listaPeliculasOrdenadas.get(numElegido - 1).getPeli());
+		mostrarFechasDisponiblesPeli(listaPeliculasOrdenadas.get(numElegido - 1));// Obj Pelicula (idPeli+NomPeli)
 
 	}
 
-	public static void mostrarSesionesDeUnaPeli(Pelicula pelicula) {
-		System.out.println("Las fechas disponibles para la pelicula (" + pelicula.getNomPeli() + ") son:");
-		String where = " WHERE P.IdPeli = '" + pelicula.getIdPeli() + "'";
-		String groupBy = "S.Fecha";
-		ArrayList<Sesion> listaSesionesDePeli = controlador.buscarSesionesYPeliculas(where, groupBy, null);
+	public static void mostrarFechasDisponiblesPeli(Pelicula peliElegida) {
+		System.out.println("Las fechas disponibles para la pelicula (" + peliElegida.getNomPeli() + ") son:");
+
+		String IdPeli = peliElegida.getIdPeli();
+		ArrayList<Sesion> FechasPeliElegida = controlador.buscarFechasPeli(IdPeli);
+
 		int cont = 1;
-		for (Sesion sesion : listaSesionesDePeli) {
-			System.out.println(cont + " - " + sesion.getFecha());
+
+		for (Sesion fechas : FechasPeliElegida) {
+			System.out.println(cont + " - " + fechas.getFecha());
 			cont++;
 		}
 
-		int numElegido = 0;
+		int numElegido = -1;
 		do {
 			System.out.println("Elija una fecha: ");
-			numElegido = controladorES.elegirOpcion(listaSesionesDePeli);
-		} while (numElegido == 0);
-		String fechaElegida = listaSesionesDePeli.get(numElegido - 1).getFecha();
-		listaSesionesDePeli = controlador.buscarSesionesYPeliculas(where, null, null);
+			numElegido = controladorES.elegirOpcion(FechasPeliElegida);
+		} while (numElegido == -1);
 
-		mostrarSesion(listaSesionesDePeli, numElegido, fechaElegida);
+		String fechaElegida = FechasPeliElegida.get(numElegido - 1).getFecha();
+		mostrarSesionDeEsaPeliYFecha(IdPeli, fechaElegida);
+
 	}
 
-	private static void mostrarSesion(ArrayList<Sesion> listaSesionesDePeli, int sesionElegida, String fechaElegida) {
+	private static void mostrarSesionDeEsaPeliYFecha(String IdPeli, String fechaElegida) {
 
-		ArrayList<Sala> listaSalas = controlador.buscarSalas(listaSesionesDePeli.get(sesionElegida - 1));
-		int contList = 1;
-		int i = 0;
-		ArrayList<Sesion> horaElegida = new ArrayList<Sesion>();
-		for (Sesion sesion : listaSesionesDePeli) {
-			if (sesion.getFecha().equals(fechaElegida)) {
-				System.out.println(contList + " - FECHA: " + sesion.getFecha() + " - Horario: " + sesion.getHoraInicio()
-						+ " Sala: " + listaSalas.get(0).getNomSala() + " Precio: " + sesion.getPrecio());
-				horaElegida.add(contList - 1, sesion);
-				contList++;
-			}
-			i++;
-		}
+		System.out.println("\nSesiones disponibles: ");
+		ArrayList<Sesion> sesionesDisponibles = controlador.buscarSesiones(IdPeli, fechaElegida);
 
-		int numElegido = 0;
+		int cont = 1;
+
+		for (Sesion sesion : sesionesDisponibles) {
+			System.out.println(cont + " - FECHA: " + sesion.getFecha() + ", Horario: " + sesion.getHoraInicio()
+					+ ", Sala: " + sesion.getSala().getIdSala() + ", Precio: "
+					+ String.format("%.2f", sesion.getPrecio()) + "€");
+			cont++;
+		} // QUITAR FECHA DEL SYSO
+
+		int numElegido = -1;
 		do {
 			System.out.println("Elija una sesion: ");
-			numElegido = controladorES.elegirOpcion(horaElegida);
-		} while (numElegido == 0);
+			numElegido = controladorES.elegirOpcion(sesionesDisponibles);
+		} while (numElegido == -1);
 
-		elegirEspectadores(horaElegida.get(numElegido - 1));
+		Sesion sesionFinal = sesionesDisponibles.get(numElegido - 1);
+		elegirEspectadores(sesionFinal);
+
 	}
 
 	private static void elegirEspectadores(Sesion sesionFinal) {
 
-		int numEspectElegido = 0;
+		int numEspectElegido = -1;
 		do {
 			System.out.println("Elija el numero de espectadores (max. 5):");
 			numEspectElegido = controladorES.numeroDeEspectadores();
-		} while (numEspectElegido == 0);
+		} while (numEspectElegido == -1);
 
 		guardarDatosEnCarrito(sesionFinal, numEspectElegido);
 
@@ -112,15 +112,15 @@ public class Principal {
 
 	public static void guardarDatosEnCarrito(Sesion sesionFinal, int numEspectElegido) {
 		Carrito carrito = new Carrito();
-		carrito.setSesion(sesionFinal);// guardo la fila/sesion selecionada a mi carrito
+		carrito.setSesion(sesionFinal);// guardo la fila/sesion selecionada en mi carrito
 
 		Entrada entradaTemporal = new Entrada();
 		entradaTemporal.setNumEntradas(numEspectElegido);
-		// entradaTemporal.getSesion().getSala().setNomSala();
+
 		carrito.setEntrada(entradaTemporal);
 
 		carritoTemporal.add(carrito);
-		mostrarSuEleccionDePelis(carritoTemporal);// ArrayList para almacenar lo elegido (Tipo: Carrito)
+		mostrarSuEleccionDePelis(carritoTemporal);// ArrayList para almacenar todo lo elegido (Tipo: Carrito)
 	}
 
 	public static void mostrarSuEleccionDePelis(ArrayList<Carrito> carritoTemporal) {
@@ -152,33 +152,34 @@ public class Principal {
 		} while (comprarMás != 1 && comprarMás != 2);
 
 		if (comprarMás == 1) {
-			mostrarMenu();
+			mostrarMenuPelis();
 
 		} else {
-			calcularDescuento();
+			calcularPorcentajeDescuento();
 
 		}
 	}
 
-	public static void calcularDescuento() {
+	public static void calcularPorcentajeDescuento() {
 
 		int peliculasDistintas = 0;
+
 		ArrayList<String> nombresPeliculas = new ArrayList<>();
 
 		for (int i = 0; i < carritoTemporal.size(); i++) {
 			String nombreActual = carritoTemporal.get(i).getSesion().getPeli().getNomPeli();
 
-			boolean yaContado = false;
+			boolean nombreEncontrado = false;
 
 			// Comprobar si la Peli ya existe en arrayList
 			for (int j = 0; j < nombresPeliculas.size(); j++) {
 				if (nombresPeliculas.get(j).equals(nombreActual)) {
-					yaContado = true;
+					nombreEncontrado = true;
 
 				}
 			}
 			// Si no estaba contado, sumamos a la lista
-			if (!yaContado) {
+			if (!nombreEncontrado) {
 				nombresPeliculas.add(nombreActual);
 				peliculasDistintas++;
 			}
@@ -192,8 +193,12 @@ public class Principal {
 		} else if (peliculasDistintas > 2) {
 			porcentajeDescuento = 0.30;
 		}
+		aplicarDescuento(porcentajeDescuento);
+	}
 
-		// Calculo descuento para cada carrito
+	/** Método para aplicar el descuento a cada entrada del carrito **/
+	public static void aplicarDescuento(double porcentajeDescuento) {
+
 		for (int i = 0; i < carritoTemporal.size(); i++) {
 
 			double precio = carritoTemporal.get(i).getSesion().getPrecio();
@@ -202,7 +207,7 @@ public class Principal {
 			double descuento = (precio * entradas) * porcentajeDescuento;
 			descuento = Math.round(descuento * 100.0) / 100.0;
 
-			carritoTemporal.get(i).getEntrada().setDescuento(descuento);
+			carritoTemporal.get(i).getEntrada().setDescuento(descuento);// tabla entrada descuento ok
 		}
 
 		mostrarResumenDeCompra();
@@ -227,14 +232,14 @@ public class Principal {
 			System.out.println("------------------------------\nPelicula: "
 					+ carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:" + carrito2.getSesion().getFecha()
 					+ "\nHora:" + carrito2.getSesion().getHoraInicio() + "\nSala:"
-					+ carrito2.getSesion().getSala().getNomSala() + "\nPrecio:"
+					+ carrito2.getSesion().getSala().getNomSala() + "\nPrecio por entrada:"
 					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de entradas:"
 					+ carrito2.getEntrada().getNumEntradas() + "\nDescuento:"
 					+ String.format("%.2f", carrito2.getEntrada().getDescuento()) + "€");
 		}
 
 		System.out.println("\nPrecio de la compra: " + String.format("%.2f", precioTotalCompra) + "€");
-		System.out.println("Descuento: " + String.format("%.2f", descuentoAplicado) + "€");
+		System.out.println("Total descuento: " + String.format("%.2f", descuentoAplicado) + "€");
 
 		double totalAPagar = precioTotalCompra - descuentoAplicado;
 		System.out.println("Total a pagar: " + String.format("%.2f", totalAPagar) + "€");
@@ -328,14 +333,10 @@ public class Principal {
 		}
 	}
 
-	public static void registrarse(String dni, String nombre, String apellido, String correo, String contrasena) {// voy
-																													// a
-																													// crear
-																													// el
-																													// objeto
-																													// Cliente
-																													// (datos
-																													// OK)
+	/**
+	 * Metodo para crear un objeto cliente (los datos recogidos ya son correctos)
+	 **/
+	public static void registrarse(String dni, String nombre, String apellido, String correo, String contrasena) {
 
 		Cliente nuevoCliente = new Cliente();
 		nuevoCliente.setDNI(dni);
@@ -360,14 +361,19 @@ public class Principal {
 
 		carritoTemporal.clear();
 		System.out.println("Compra cancelada");
-		mostrarMenu();
+		mostrarMenuPelis();
 	}
 
-	
 	private static void finalizarCompra() {
 
 		System.out.println("Compra realizada con éxito");
-		mostrarMenu();
+		// guardarDatosEnBDCompra();
+		// mostrarMenu();
+	}
+
+	private static void guardarDatosEnBDCompra() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

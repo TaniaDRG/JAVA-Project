@@ -12,7 +12,7 @@ public class Sesion {
 	private Sala sala;
 	
 	
-	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio, Pelicula peli) {
+	public Sesion(String idSesion, String fecha, String horaInicio, String horaFin, double precio, Pelicula peli, Sala sala) {
 		
 		this.idSesion = idSesion;
 		this.fecha = fecha;
@@ -20,10 +20,9 @@ public class Sesion {
 		this.horaFin = horaFin;
 		this.precio = precio;
 		this.peli = peli;
+		this.sala = sala;
 	}
 
-	
-	
 
 	public Sesion() {
 		
@@ -98,8 +97,6 @@ public class Sesion {
 		return "Sesion \nIdSesion:" + idSesion + "\nFecha:" + fecha + "\nHoraInicio:" + horaInicio + "\nHoraFin:"
 				+ horaFin + "\nPrecio:" + precio;
 	}
-
-
 
 
 	

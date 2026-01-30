@@ -4,7 +4,7 @@ public class Sala {
 	
 	private int idSala;
 	private String nomSala;
-	private Sesion sesion; //me traigo el obj sesion a este obj sala
+	private Sesion sesion; //No lo estoy usando.. REVISAR
 	
 	
 	
@@ -12,10 +12,10 @@ public class Sala {
 	}
 
 
-	public Sala(int idSala, String nomSal, Sesion session) {
+	public Sala(int idSala, String nomSala, Sesion sesion) {
 		this.idSala = idSala;
 		this.nomSala = nomSala;
-		this.sesion = session;
+		this.sesion = sesion;
 	}
 
 
@@ -45,17 +45,13 @@ public class Sala {
 	}
 
 
-	/**
-	 * @return the sesion
-	 */
+	
 	public Sesion getSesion() {
 		return sesion;
 	}
 
 
-	/**
-	 * @param sesion the sesion to set
-	 */
+	
 	public void setSesion(Sesion sesion) {
 		this.sesion = sesion;
 	}
