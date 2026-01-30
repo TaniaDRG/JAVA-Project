@@ -7,6 +7,13 @@ public class Carrito {
 	private Entrada entrada;
 	private Sesion sesion;
 
+	public Carrito(Cliente cliente, Compra compra, Entrada entrada, Sesion sesion) {
+		this.cliente = cliente;
+		this.compra = compra;
+		this.entrada = entrada;
+		this.sesion = sesion;
+	}
+
 	public Carrito() {
 	}
 	

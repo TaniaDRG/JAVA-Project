@@ -30,10 +30,10 @@ public class Entrada {
 	public void setIdEntrada(int idEntrada) {
 		this.idEntrada = idEntrada;
 	}
-	public double getPrecioSesion() {
+	public double getPrecioEntrada() {
 		return precioEntrada;
 	}
-	public void setPrecioSesion(double precioEntrada) {
+	public void setPrecioEntrada(double precioEntrada) {
 		this.precioEntrada = precioEntrada;
 	}
 	public double getDescuento() {

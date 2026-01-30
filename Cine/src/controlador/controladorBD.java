@@ -30,8 +30,8 @@ public class controladorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			// Parametros para la conexion --> URL, user, pass puede hacer falta el puerto
 			// localhost:puerto/
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:33060/" + this.nombreBD, "root",
-					"elorrieta");
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:33060/" + this.nombreBD, "daw",
+					"daw2468");
 			conexionRealizada = true;
 		} catch (ClassNotFoundException e) {
 			System.out.println("No se encontró la librería de sqlconnection.jar");

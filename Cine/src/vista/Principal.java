@@ -193,55 +193,59 @@ public class Principal {
 		} else if (peliculasDistintas > 2) {
 			porcentajeDescuento = 0.30;
 		}
-		aplicarDescuento(porcentajeDescuento);
+		calcularDatosTabla(porcentajeDescuento);
 	}
 
-	/** Método para aplicar el descuento a cada entrada del carrito **/
-	public static void aplicarDescuento(double porcentajeDescuento) {
+	/**
+	 * Método que calcula los datos que necesito almacenar en la BD y los guardo en
+	 * mi carritotemporal: descuento (tabla Entrada) y PrecioEntrada. También
+	 * obtengo el descuentoAplicado y precioTotal para la tabla Compra
+	 **/
+	public static void calcularDatosTabla(double porcentajeDescuento) {
+
+		double descuentoAplicado = 0.0;
+		double precioTotal = 0.0;
 
 		for (int i = 0; i < carritoTemporal.size(); i++) {
 
-			double precio = carritoTemporal.get(i).getSesion().getPrecio();
+			double precioSesion = carritoTemporal.get(i).getSesion().getPrecio();
 			int entradas = carritoTemporal.get(i).getEntrada().getNumEntradas();
 
-			double descuento = (precio * entradas) * porcentajeDescuento;
-			descuento = Math.round(descuento * 100.0) / 100.0;
+			// Calculo/Guardo el precio de la tabla Entrada
+			double precioEntrada = precioSesion * entradas;
+			carritoTemporal.get(i).getEntrada().setPrecioEntrada(precioEntrada);
 
-			carritoTemporal.get(i).getEntrada().setDescuento(descuento);// tabla entrada descuento ok
+			// Calculo/Guardo el descuento de la tabla Entrada
+			double descuento = precioEntrada * porcentajeDescuento;
+			descuento = Math.round(descuento * 100.0) / 100.0;
+			carritoTemporal.get(i).getEntrada().setDescuento(descuento);
+
+			descuentoAplicado += descuento;
+			precioTotal += precioEntrada;
 		}
 
-		mostrarResumenDeCompra();
+		mostrarResumenDeCompra(descuentoAplicado, precioTotal);
 	}
 
-	public static void mostrarResumenDeCompra() {
+	public static void mostrarResumenDeCompra(double descuentoAplicado, double precioTotal) { // datos para tabla COMPRA
 
 		System.out.println("\n===== RESUMEN DE COMPRA ======");
 
-		double precioTotalCompra = 0.0;
-		double descuentoAplicado = 0.0;
-
 		for (Carrito carrito2 : carritoTemporal) {
 
-			double precio = carrito2.getSesion().getPrecio();
-			int entradas = carrito2.getEntrada().getNumEntradas();
-			double descuento = carrito2.getEntrada().getDescuento();
-
-			precioTotalCompra += precio * entradas;
-			descuentoAplicado += descuento;
-
-			System.out.println("------------------------------\nPelicula: "
-					+ carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:" + carrito2.getSesion().getFecha()
-					+ "\nHora:" + carrito2.getSesion().getHoraInicio() + "\nSala:"
-					+ carrito2.getSesion().getSala().getNomSala() + "\nPrecio por entrada:"
+			System.out.println("------------------------------");
+			System.out.println("\nPelicula: " + carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:"
+					+ carrito2.getSesion().getFecha() + "\nHora:" + carrito2.getSesion().getHoraInicio() + "\nSala:"
+					+ carrito2.getSesion().getSala().getNomSala() + "\nPrecio sesion:"
 					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de entradas:"
 					+ carrito2.getEntrada().getNumEntradas() + "\nDescuento:"
 					+ String.format("%.2f", carrito2.getEntrada().getDescuento()) + "€");
 		}
 
-		System.out.println("\nPrecio de la compra: " + String.format("%.2f", precioTotalCompra) + "€");
+		System.out.println("\nPrecio de la compra: " + String.format("%.2f", precioTotal) + "€");
 		System.out.println("Total descuento: " + String.format("%.2f", descuentoAplicado) + "€");
 
-		double totalAPagar = precioTotalCompra - descuentoAplicado;
+		double totalAPagar = precioTotal - descuentoAplicado;
 		System.out.println("Total a pagar: " + String.format("%.2f", totalAPagar) + "€");
 
 		confirmarCompra();
@@ -309,7 +313,15 @@ public class Principal {
 		} else {
 			Cliente cliente = existeCliente.get(0);
 			System.out.println("Bienvenida/o " + cliente.getNomCliente());
+			// TENGO QUE AÑADIR EL CLIENTE A CARRITO
+			guardarClienteEnCarrito(cliente);
 			finalizarCompra();
+		}
+	}
+
+	public static void guardarClienteEnCarrito(Cliente cliente) {
+		for (Carrito carrito2 : carritoTemporal) {
+			carrito2.setCliente(cliente);
 		}
 	}
 
@@ -370,7 +382,5 @@ public class Principal {
 		// guardarDatosEnBDCompra();
 		// mostrarMenu();
 	}
-
-
 
 }
