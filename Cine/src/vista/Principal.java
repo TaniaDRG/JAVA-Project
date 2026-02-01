@@ -30,6 +30,7 @@ public class Principal {
 		System.out.println("*******************");
 		System.out.println("    BIENVENIDO  ");
 		System.out.println("*******************");
+		
 		controlador = new ControladorBD("cine_daw");
 		controladorES = new ControladorEntradaYSalida();
 
