@@ -177,7 +177,7 @@ public class Principal {
 	}
 
 	public static void mostrarSuEleccionDePelis(ArrayList<Carrito> carritoTemporal) {
-		System.out.println("\nTu Carrito:\n");
+		System.out.println("\nTu Carrito:");
 
 		for (Carrito carrito2 : carritoTemporal) {
 
@@ -436,7 +436,7 @@ public class Principal {
 	public static void resetearCarrito() {
 
 		carritoTemporal.clear();
-		compraFinal = null;
+		compraFinal = new Compra();
 
 	}
 
