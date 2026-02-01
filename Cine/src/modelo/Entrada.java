@@ -42,10 +42,10 @@ public class Entrada {
 	public void setDescuento(double descuento) {
 		this.descuento = descuento;
 	}
-	public int getNumEntradas() {
+	public int getNumEspectadores() {
 		return numEspectadores;
 	}
-	public void setNumEntradas(int numEspectadores) {
+	public void setNumEspectadores(int numEspectadores) {
 		this.numEspectadores = numEspectadores;
 	}
 	

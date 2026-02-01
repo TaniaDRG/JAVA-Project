@@ -2,108 +2,81 @@ package modelo;
 
 public class Compra {
 
-	
 	private int idCompra;
 	private String fecha;
 	private String hora;
 	private double precioTotal;
 	private double descuentoAplicado;
-	private Entrada entrada;
 	private Cliente cliente;
-	
-	
-	
-	
-	public Compra(int idCompra, int totalEntradas, String fecha, String hora, double precioTotal, double descuentoAplicado, Entrada entrada, Cliente cliente ) {
+
+	public Compra(int idCompra, int totalEntradas, String fecha, String hora, double precioTotal,
+			double descuentoAplicado, Cliente cliente) {
+		
 		this.idCompra = idCompra;
 		this.fecha = fecha;
 		this.hora = hora;
 		this.precioTotal = precioTotal;
 		this.descuentoAplicado = descuentoAplicado;
-		this.entrada = entrada;
 		this.cliente = cliente;
-		
+
 	}
-	
-	
 
 	public Compra() {
-		
+
 	}
-
-
 
 	public int getIdCompra() {
 		return idCompra;
 	}
-	
+
 	public void setIdCompra(int idCompra) {
 		this.idCompra = idCompra;
 	}
-	
 
-	
 	public String getFecha() {
 		return fecha;
 	}
-	
+
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-	
+
 	public String getHora() {
 		return hora;
 	}
-	
+
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
-	
+
 	public double getPrecioTotal() {
 		return precioTotal;
 	}
-	
+
 	public void setPrecioTotal(double precioTotal) {
 		this.precioTotal = precioTotal;
 	}
-	
+
 	public double getDescuentoAplicado() {
 		return descuentoAplicado;
 	}
-	
+
 	public void setDescuentoAplicado(double descuentoAplicado) {
 		this.descuentoAplicado = descuentoAplicado;
 	}
-	
-	
 
-	public Entrada getEntrada() {
-		return entrada;
-	}
-
-
-
-	public void setEntrada(Entrada entrada) {
-		this.entrada = entrada;
-	}
-	
-	
 	public Cliente getCliente() {
 		return cliente;
 	}
-
-
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
-	
 	@Override
 	public String toString() {
-		return "Compra \nIdCompra:" + idCompra + "\nFecha:" + fecha + "\nHora:" + hora + "\nPrecioTotal:" + precioTotal +
-				"\nDescuentoAplicado:" + descuentoAplicado;
+		return "Compra \nIdCompra:" + idCompra + "\nFecha:" + fecha + "\nHora:" + hora + "\nPrecioTotal:" + precioTotal
+				+ "\nDescuentoAplicado:" + descuentoAplicado;
 	}
-
 
 }

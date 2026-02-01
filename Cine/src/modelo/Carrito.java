@@ -3,13 +3,11 @@ package modelo;
 public class Carrito {
 
 	private Cliente cliente;
-	private Compra compra;
 	private Entrada entrada;
 	private Sesion sesion;
 
-	public Carrito(Cliente cliente, Compra compra, Entrada entrada, Sesion sesion) {
+	public Carrito(Cliente cliente, Entrada entrada, Sesion sesion) {
 		this.cliente = cliente;
-		this.compra = compra;
 		this.entrada = entrada;
 		this.sesion = sesion;
 	}
@@ -23,14 +21,6 @@ public class Carrito {
 	
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-	
-	public Compra getCompra() {
-		return compra;
-	}
-	
-	public void setCompra(Compra compra) {
-		this.compra = compra;
 	}
 	
 	public Entrada getEntrada() {

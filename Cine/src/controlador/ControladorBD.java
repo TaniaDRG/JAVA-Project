@@ -7,19 +7,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import modelo.Carrito;
 import modelo.Cliente;
+import modelo.Compra;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Sesion;
 
-public class controladorBD {
+/**
+ * 
+ */
+public class ControladorBD {
 
 	private Connection conexion;// Guarda la conexión con la base de datos.
 	private String nombreBD;// Guarda el nombre de la base de datos
 
 	// Constructores
-	public controladorBD(String nombreBD) {
+	public ControladorBD(String nombreBD) {
 		this.nombreBD = nombreBD;
 	}
 
@@ -30,8 +37,8 @@ public class controladorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			// Parametros para la conexion --> URL, user, pass puede hacer falta el puerto
 			// localhost:puerto/
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:33060/" + this.nombreBD, "daw",
-					"daw2468");
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:33060/" + this.nombreBD, "root",
+					"elorrieta");
 			conexionRealizada = true;
 		} catch (ClassNotFoundException e) {
 			System.out.println("No se encontró la librería de sqlconnection.jar");
@@ -58,7 +65,15 @@ public class controladorBD {
 		return Conexioncerrada;
 	}
 
-	public ArrayList<Pelicula> buacarPeliculas() {
+	/**
+	 * Realiza una consulta a la BD para obtener el Nombre e ID de todas las
+	 * películas cuya fecha y hora de sesion sea mayor o iagual al actual. Crea
+	 * objetos Pelicula con la información obtenida y los almacena en un ArrayList.
+	 * 
+	 * @return ArrayList<Pelicula> con todas las películas disponibles según las
+	 *         sesiones. Si ocurre un error de SQL, devuelve un ArrayList vacío.
+	 **/
+	public ArrayList<Pelicula> buscarPeliculas() {
 
 		ArrayList<Pelicula> peliculasOrdenadas = new ArrayList<Pelicula>();
 
@@ -78,13 +93,22 @@ public class controladorBD {
 
 			consulta.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return peliculasOrdenadas;
 
 	}
 
+	/**
+	 * Realiza una consulta a la BD para obtener todas las fechas disponibles para
+	 * esa película con fecha u Hora posterior al actual. Almacena cada fecha en un
+	 * objeto Sesion y se agrega a un ArrayList (FechasPeliElegida) que se devuelve
+	 * al final del método.
+	 * 
+	 * @param IdPeli
+	 * @return = FechasPeliElegida
+	 */
 	public ArrayList<Sesion> buscarFechasPeli(String IdPeli) {
 
 		ArrayList<Sesion> FechasPeliElegida = new ArrayList<Sesion>();
@@ -115,14 +139,25 @@ public class controladorBD {
 
 	}
 
+	/**
+	 * Realiza una consulta a la BD para obtener todas las sesiones disponibles de
+	 * una película y fecha específica. Cada sesión incluye información de Sala y
+	 * película asociada, y se almacena en un objeto Sesion.
+	 * 
+	 * 
+	 * @param IdPeli
+	 * @param fechaElegida
+	 * @return = sesionesDisponibles
+	 */
 	public ArrayList<Sesion> buscarSesiones(String IdPeli, String fechaElegida) {
 
 		ArrayList<Sesion> sesionesDisponibles = new ArrayList<Sesion>();
 
-		String query = " SELECT S.IdSesion, S.Fecha, S.HoraInicio, S.HoraFin, S.Precio, Sa.IdSala, Sa.NomSala, P.IdPeli, P.NomPeli " 
-						+ "FROM Sesion S join Pelicula P on S.IdPeli = P.IdPeli join Sala Sa ON S.IdSala = Sa.IdSala " 
-						+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida + "'";
-		 				//S.IdPeli = ? AND S.Fecha = ?
+		String query = " SELECT S.IdSesion, S.Fecha, S.HoraInicio, S.HoraFin, S.Precio, Sa.IdSala, Sa.NomSala, P.IdPeli, P.NomPeli "
+				+ "FROM Sesion S join Pelicula P on S.IdPeli = P.IdPeli join Sala Sa ON S.IdSala = Sa.IdSala "
+				+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida + "'" 
+				+ "ORDER BY S.HoraInicio ";
+		// S.IdPeli = ? AND S.Fecha = ?
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -133,19 +168,18 @@ public class controladorBD {
 				sesion.setHoraInicio(resultado.getString(3));
 				sesion.setHoraFin(resultado.getString(4));
 				sesion.setPrecio(Double.parseDouble(resultado.getString(5)));
-				
-				//Tengo que guardarlo primero en el subObjeto 
+
+				// Tengo que guardarlo primero en el subObjeto
 				Sala sala = new Sala();
 				sala.setIdSala(resultado.getInt(6));
 				sala.setNomSala(resultado.getString(7));
 				sesion.setSala(sala);// ojo
 
-				
 				Pelicula peli = new Pelicula();
 				peli.setIdPeli(resultado.getString(8));
 				peli.setNomPeli(resultado.getString(9));
 				sesion.setPeli(peli);// ojo
-				
+
 				sesionesDisponibles.add(sesion);
 			}
 
@@ -155,22 +189,24 @@ public class controladorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		/*Collections.sort(sesionesDisponibles, 
+		    Comparator.comparing(Sesion::getHoraInicio)
+		);*/
 
 		return sesionesDisponibles;
 
 	}
 
-	
+	public Cliente buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
 
-	public ArrayList<Cliente> buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
-
-		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		Cliente clienteBuscado = new Cliente();
 		// defino la estructura de la query pues los ? son el espacio que reservo para
 		String query = "SELECT DNI, NomCliente, Apellido, Correo " + "FROM Cliente " + "WHERE DNI = ? "
 				+ "AND Contraseña = AES_ENCRYPT(?, 'elorrieta')";
 
 		try {
-			// PreparedStatement evita SQL Injection
+			// evita SQL Injection
 			PreparedStatement consulta = conexion.prepareStatement(query);
 			// relleno los ? (empiezan en 1, NO en 0)
 			consulta.setString(1, dniUsuario);// primer ?
@@ -179,24 +215,22 @@ public class controladorBD {
 			ResultSet resultado = consulta.executeQuery();
 
 			while (resultado.next()) {
-				Cliente clienteBuscado = new Cliente();
 				clienteBuscado.setDNI(resultado.getString(1));
 				clienteBuscado.setNomCliente(resultado.getString(2));
 				clienteBuscado.setApellido(resultado.getString(3));
 				clienteBuscado.setCorreo(resultado.getString(4));
 				// no guardo la contraseña porque nunca la necesito una vez validado el login
-				clientes.add(clienteBuscado);
 			}
 
 			resultado.close();
 			consulta.close();
 
 		} catch (SQLException e) {
-			System.out.println("Error al iniciar sesión: " + e.getMessage());// ? no sé para que es:+ e.getMessage()
+			System.out.println("Error al iniciar sesión ");
 
 		}
 
-		return clientes;
+		return clienteBuscado;
 
 	}
 
@@ -224,26 +258,75 @@ public class controladorBD {
 
 	}
 
-	/*
-	 * public boolean guardarDatosEnBDCompra() {
-	 * 
-	 * String query =
-	 * "INSERT INTO Compra (IdCompra, Fecha, Hora, PrecioTotal, DescuentoAplicado, DNI) "
-	 * + "VALUES (?,?,?,?,?,? ?)";
-	 * 
-	 * try { PreparedStatement consulta = conexion.prepareStatement(query);
-	 * consulta.setString(1, nuevoCliente.getDNI()); consulta.setString(2,
-	 * nuevoCliente.getNomCliente()); consulta.setString(3,
-	 * nuevoCliente.getApellido()); consulta.setString(4, nuevoCliente.getCorreo());
-	 * consulta.setString(5, nuevoCliente.getContraseña());
-	 * 
-	 * consulta.executeUpdate(); consulta.close(); return true;
-	 * 
-	 * } catch (SQLException e) {
-	 * System.out.println("Error al insertar cliente (DNI o correo duplicado)");
-	 * return false; }
-	 * 
-	 * }
-	 */
+	public boolean guardarDatosEnBDCompra(Compra compraFinal) {
+
+		String query = "INSERT INTO Compra (Fecha, Hora, PrecioTotal, DescuentoAplicado, DNI) "
+				+ "VALUES (current_date,current_time,?,?,?)";
+
+		try {
+			PreparedStatement consulta = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);// quieres la
+																											// clave
+																											// generadas
+			consulta.setDouble(1, compraFinal.getPrecioTotal());
+			consulta.setDouble(2, compraFinal.getDescuentoAplicado());
+			consulta.setString(3, compraFinal.getCliente().getDNI());
+
+			consulta.executeUpdate();
+
+			// OBTENER ID AUTOGENERADO
+			ResultSet resultado = consulta.getGeneratedKeys();
+			if (resultado.next()) {
+				int idCompraGenerado = resultado.getInt(1);
+				compraFinal.setIdCompra(idCompraGenerado);
+			}
+
+			resultado.close();
+			consulta.close();
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Error al insertar la compra");
+			return false;
+		}
+
+	}
+
+	public boolean guardarDatosEnBDEntrada(ArrayList<Carrito> carritoTemporal, Compra compraFinal) {
+
+		String query = "INSERT INTO Entrada (PrecioEntrada, Descuento, NumEspectadores, IdCompra, IdSesion) "
+				+ "VALUES (?,?,?,?,?)";
+
+		try {
+			PreparedStatement consulta = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+			for (Carrito carrito2 : carritoTemporal) {
+
+				consulta.setDouble(1, carrito2.getEntrada().getPrecioEntrada());
+				consulta.setDouble(2, carrito2.getEntrada().getDescuento());
+				consulta.setInt(3, carrito2.getEntrada().getNumEspectadores());
+				consulta.setInt(4, compraFinal.getIdCompra());
+				consulta.setString(5, carrito2.getSesion().getIdSesion());
+
+				consulta.executeUpdate();
+				// OBTENER EL ID
+
+				ResultSet resultado = consulta.getGeneratedKeys();
+				if (resultado.next()) {
+					int idEntradaGenerado = resultado.getInt(1);
+					carrito2.getEntrada().setIdEntrada(idEntradaGenerado);
+				}
+
+				resultado.close();
+			}
+
+			consulta.close();
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Error al insertar cliente (DNI o correo duplicado)");
+			return false;
+		}
+
+	}
 
 }

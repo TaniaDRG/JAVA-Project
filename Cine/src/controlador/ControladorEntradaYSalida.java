@@ -6,13 +6,22 @@ import java.util.Scanner;
 
 import vista.Principal;
 
-public class controladorEntradaYSalida {
+public class ControladorEntradaYSalida {
 
 	private Scanner sc;
 
-	public controladorEntradaYSalida() {
+	public ControladorEntradaYSalida() {
 		sc = new Scanner(System.in);
 	}
+
+	/**
+	 * Recibe una lista de objetos (de cualquier tipo). Lee la opcion del usuario y
+	 * valida si está dentro del rango
+	 * 
+	 * @param <T>   el tipo de objetos contenidos en la lista.
+	 * @param lista = lista de elementos a elegir.
+	 * @return -1 si está fuera del rango, sino devuelve el número elegido
+	 **/
 
 	// <T> Recibir cualquier tipo de objeto/Array (Pelicula, sesion....) y poder
 	// modificarlo
@@ -20,21 +29,25 @@ public class controladorEntradaYSalida {
 	public <T> int elegirOpcion(List<T> lista) {
 		try {
 			int eleccion = Integer.valueOf(sc.nextLine());
-			
+
 			if (eleccion < 1 || eleccion > lista.size()) {
-				System.out.println("El valor introducido no esta dentro de la lista");
+				System.out.println("El valor introducido no está en la lista");
 				return -1;
 			}
 			return eleccion;
 
-		} catch (Exception e) {
-			System.out.println("Error durante la eleccion: " + e);//?????Le puedo quitar la e
+		} catch (Exception e) {// NumberFormatException
+			System.out.println("Error durante la elección ");
 			return -1;
 		}
 	}
 
-	
-	
+	/**
+	 * Lee el número de espectadores para una sesión, valida su rango. Si el valor
+	 * no es valido o ocurre un error durante la lectura, devuelve -1.
+	 * 
+	 * @return
+	 */
 	public int numeroDeEspectadores() {// generico
 		try {
 			int eleccion = Integer.valueOf(sc.nextLine());
@@ -46,12 +59,11 @@ public class controladorEntradaYSalida {
 			return eleccion;
 
 		} catch (Exception e) {
-			System.out.println("Error durante la eleccion: " + e);//////???????????Le puedo quitar la e
+			System.out.println("Error durante la eleccion ");
 			return -1;
 		}
 
 	}
-
 
 	/** Método genérico para leer un número dentro de un rango. **/
 	public int leerOpciones(int min, int max) {
@@ -64,6 +76,7 @@ public class controladorEntradaYSalida {
 				return -1;
 			}
 			return opcion;
+			
 		} catch (NumberFormatException e) {
 			System.out.println("Error: se esperaba un número.");
 			return -1;
@@ -90,11 +103,9 @@ public class controladorEntradaYSalida {
 		}
 
 		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
-		
 
 	}
 
-	
 	public void recogerDatosNuevoUsuario() {
 
 		String dni, nombre, apellido, correo, contrasena;
