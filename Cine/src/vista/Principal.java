@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controlador.ControladorBD;
 import controlador.ControladorEntradaYSalida;
+import controlador.ControladorFichero;
 import modelo.Carrito;
 import modelo.Cliente;
 import modelo.Entrada;
@@ -498,7 +499,17 @@ public class Principal {
 	}
 
 	private static void generarFichero() {
-		// TODO Auto-generated method stub
+		ControladorFichero fichero = new ControladorFichero("ficheros/");
+		
+		boolean generado = fichero.escribirCompra("compras.txt", carritoTemporal, compraFinal.getCliente(), compraFinal);
+		
+		if(generado) {
+			System.out.println("Ticket de compra generado correctamente");
+		} else {
+			System.out.println("No se pudo generar el ticket de compra");
+		}
+
+
 
 	}
 
