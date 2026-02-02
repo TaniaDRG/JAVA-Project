@@ -98,6 +98,6 @@ public class Sesion {
 				+ horaFin + "\nPrecio:" + precio;
 	}
 
-
+//prueba
 	
 }
