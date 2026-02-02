@@ -154,7 +154,7 @@ public class ControladorBD {
 
 		String query = " SELECT S.IdSesion, S.Fecha, S.HoraInicio, S.HoraFin, S.Precio, Sa.IdSala, Sa.NomSala, P.IdPeli, P.NomPeli "
 				+ "FROM Sesion S join Pelicula P on S.IdPeli = P.IdPeli join Sala Sa ON S.IdSala = Sa.IdSala "
-				+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida + "'" 
+				+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida + "' AND S.HoraInicio > CURTIME() " 
 				+ "ORDER BY S.HoraInicio ";
 		// S.IdPeli = ? AND S.Fecha = ?
 		try {
