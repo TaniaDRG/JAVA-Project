@@ -173,3 +173,37 @@ DESCUENTO APLICADO: -0,00 €
 TOTAL A PAGAR: 21,00 €
 ====================================
 
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 02/02/2026 20:35:19
+Cliente: Usuario
+----------
+Pelicula: Avatar: Fuego y ceniza
+Fecha: 2026-02-02
+Hora: 20:50:00
+Sala: Tercera
+Entradas: 1
+Subtotal: 9,00 €
+------------------------------------
+TOTAL SIN DESCUENTO: 9,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 9,00 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 02/02/2026 20:47:33
+Cliente: Usuario
+----------
+Pelicula: Avatar: Fuego y ceniza
+Fecha: 2026-02-02
+Hora: 20:50:00
+Sala: Tercera
+Entradas: 2
+Subtotal: 18,00 €
+------------------------------------
+TOTAL SIN DESCUENTO: 18,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 18,00 €
+====================================
+
