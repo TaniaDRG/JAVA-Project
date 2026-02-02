@@ -28,9 +28,9 @@ public class Principal {
 	 * se conecta y desconecta con la BD, muestra el menú de películas
 	 **/
 	public static void iniciar() {
-		System.out.println("*******************");
-		System.out.println("    BIENVENIDO  ");
-		System.out.println("*******************");
+		System.out.println("******************************");
+		System.out.println("         BIENVENIDO  ");
+		System.out.println("******************************");
 		
 		controlador = new ControladorBD("cine_daw");
 		controladorES = new ControladorEntradaYSalida();
@@ -55,14 +55,14 @@ public class Principal {
 		int numElegido = -1;
 
 		do {
-			System.out.println("\nLista de peliculas: \n");
+			System.out.println("\nLista de películas: \n");
 
 			for (Pelicula peli : listaPeliculasOrdenadas) {
 				System.out.println(cont + " - " + peli.getNomPeli());
 				cont++;
 			}
 
-			System.out.println("Elija una pelicula: ");
+			System.out.println("Elija una película: ");
 			numElegido = controladorES.elegirOpcion(listaPeliculasOrdenadas);
 			if (numElegido == -1) {
 				cont = 1;
@@ -83,7 +83,7 @@ public class Principal {
 	 */
 	public static void mostrarFechasDisponiblesPeli(Pelicula peliElegida) {
 
-		System.out.println("Las fechas disponibles para la película (" + peliElegida.getNomPeli() + ") son:");
+		System.out.println("Las fechas disponibles para la película (" + peliElegida.getNomPeli() + ") son:\n");
 
 		String IdPeli = peliElegida.getIdPeli();
 		ArrayList<Sesion> FechasPeliElegida = controlador.buscarFechasPeli(IdPeli);
@@ -120,7 +120,7 @@ public class Principal {
 	 */
 	private static void mostrarSesionDeEsaPeliYFecha(String IdPeli, String fechaElegida) {
 
-		System.out.println("\nSesiones disponibles: ");
+		System.out.println("Sesiones disponibles: \n");
 		ArrayList<Sesion> sesionesDisponibles = controlador.buscarSesiones(IdPeli, fechaElegida);
 
 		int cont = 1;
@@ -134,7 +134,7 @@ public class Principal {
 
 		int numElegido = -1;
 
-		System.out.println("Elija una sesion: ");
+		System.out.println("Elija una sesión: ");
 		numElegido = controladorES.elegirOpcion(sesionesDisponibles);
 		if (numElegido == -1) {
 			mostrarMenuPelis();
@@ -156,7 +156,7 @@ public class Principal {
 
 		int numEspectElegido = -1;
 		do {
-			System.out.println("Elija el numero de espectadores (máx. 5):");
+			System.out.println("Elija el número de espectadores (máx. 5):");
 			numEspectElegido = controladorES.numeroDeEspectadores();
 		} while (numEspectElegido == -1);
 
@@ -374,7 +374,7 @@ public class Principal {
 		Cliente existeCliente = controlador.buscarClienteBD(dniUsuario, contraseñaUsuario);
 		/* guardo el resultado de la busqueda del usuario en obj existeCliente */
 
-		if (existeCliente == null) {
+		if (existeCliente.getDNI() == null) {
 			System.out.println("DNI o contraseña incorrectos.");
 			mostrarMenuOpcionesDeLogin();
 		} else {
@@ -398,7 +398,7 @@ public class Principal {
 			System.out.println("No se pudo acceder como invitado.");
 
 		} else {
-			System.out.println("Acceso como invitado.");
+			System.out.println("Acceso como invitado.\n");
 
 			compraFinal.setCliente(existeCliente);
 			finalizarCompra();
@@ -483,7 +483,7 @@ public class Principal {
 
 		int ticket;
 		do {
-			System.out.println("¿ Desea ticket de compra ?");
+			System.out.println("\n¿ Desea ticket de compra ?");
 			System.out.println("1. Si");
 			System.out.println("2. No");
 			ticket = controladorES.leerOpciones(1, 2);
