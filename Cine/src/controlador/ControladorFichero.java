@@ -28,6 +28,12 @@ public class ControladorFichero {
 	        if (!directorio.exists()) {
 	            directorio.mkdirs();
 	        }
+	        
+	        File fichero = new File (ruta + nombreFichero);
+	        if (!fichero.exists()) {
+	        	fichero.createNewFile();
+	        }
+
 
 	        BufferedWriter escritor = new BufferedWriter(
 	                new FileWriter(ruta + nombreFichero, true)
