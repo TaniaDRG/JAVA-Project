@@ -14,6 +14,9 @@ public class ControladorEntradaYSalida {
 		sc = new Scanner(System.in);
 	}
 
+	
+	
+	 
 	/**
 	 * Recibe una lista de objetos (de cualquier tipo). Lee la opcion del usuario y
 	 * valida si está dentro del rango
