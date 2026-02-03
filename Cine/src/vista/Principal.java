@@ -347,7 +347,7 @@ public class Principal {
 	}
 
 	/**
-	 * * Permite al usuario confirmar la compra. Muestra un menú, opciones: "Sí" o
+	 * Permite al usuario confirmar la compra. Muestra un menú, opciones: "Sí" o
 	 * "No" y valida la entrada (mét. leerOpciones). Si elige "Sí" (1), se dirige al
 	 * mét. mostrarMenuOpcionesDeLogin. Si elige "No" (2), se dirige al mét.
 	 * resetearCarrito y después al mét. iniciar.
@@ -435,6 +435,12 @@ public class Principal {
 		}
 	}
 
+	/**
+	 * Permite al usuario acceder como invitado a través de un DNI y contraseña que
+	 * existen en la BD. Si la búsqueda es exitosa, se asigna este Cliente a la
+	 * compraFinal y se dirige al mét.finalizarCompra. En caso de error, se muestra
+	 * un mensaje indicando que no se pudo acceder y vuelve al LOGIN.
+	 */
 	public static void accedeComoInvitado() {
 
 		String dniInvitado = "Invitado1";
@@ -442,11 +448,9 @@ public class Principal {
 
 		Cliente existeCliente = controlador.buscarClienteBD(dniInvitado, contrasenaInvitado);
 
-		// No se si poner esto porque el usuario Invitado siempre va a estar en la base
-		// de datos y si entra en este IF no tengo a donde devolverlo/enviarlo
 		if (existeCliente == null) {
 			System.out.println("No se pudo acceder como invitado.");
-
+			mostrarMenuOpcionesDeLogin();
 		} else {
 			System.out.println("Acceso como invitado.\n");
 
@@ -457,8 +461,17 @@ public class Principal {
 	}
 
 	/**
-	 * Metodo para crear un objeto cliente (los datos recogidos ya son correctos)
-	 **/
+	 * Metodo que crea un obj. cliente (los datos recogidos ya son correctos) para
+	 * enviarlo como parámetro al mét. insertarCliente. Si insertado, almacena dicho
+	 * cliente en el obj. compraFinal y se dirige al met.finalizarCompra. Sino
+	 * Mensaje de error y vuelve al LOGIN /**
+	 * 
+	 * @param dni
+	 * @param nombre
+	 * @param apellido
+	 * @param correo
+	 * @param contrasena
+	 */
 	public static void registrarse(String dni, String nombre, String apellido, String correo, String contrasena) {
 
 		Cliente nuevoCliente = new Cliente();
@@ -468,7 +481,6 @@ public class Principal {
 		nuevoCliente.setCorreo(correo);
 		nuevoCliente.setContraseña(contrasena);
 
-		// Guardar en BD
 		boolean insertado = controlador.insertarCliente(nuevoCliente);
 
 		if (insertado) {
@@ -483,7 +495,7 @@ public class Principal {
 
 	/**
 	 * Método que borra todo lo almacenado en el array carritoTemporal(entradas
-	 * realizadas) y en el objeto compraFinal
+	 * realizadas) y en el obj. compraFinal
 	 **/
 	public static void resetearCarrito() {
 
@@ -507,6 +519,10 @@ public class Principal {
 	}
 
 	/**
+	 * Se dirige al mét. guardarDatosEnBDCompra (enviando como parámetro
+	 * compraFinal) recibiendo true, si se ha efectuado correctamente la inserción,
+	 * para dirigirse al mét: guardarEntradasDeCompra(). Si recibe false, mensaje de
+	 * error y mét. resetearCarrito().
 	 * 
 	 */
 	private static void guardarCompra() {

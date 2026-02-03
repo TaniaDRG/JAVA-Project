@@ -88,8 +88,8 @@ public class ControladorEntradaYSalida {
 
 	/**
 	 * Solicita al usuario su DNI y contraseña para iniciar sesión. Valida que los
-	 * campos no estén vacíos. Si el DNI o la contraseña vacíos muestra mensaje de error y vuelve a LOGIN.
-	 *Si todo correcto va al mét. iniciarSesion
+	 * campos no estén vacíos. Si el DNI o la contraseña vacíos muestra mensaje de
+	 * error y vuelve a LOGIN. Si todo correcto va al mét. iniciarSesion
 	 */
 	public void recogerDatosUsuarioExistente() {
 
@@ -112,6 +112,12 @@ public class ControladorEntradaYSalida {
 		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
 	}
 
+	/**
+	 * Solicita al usuario los datos necesarios para registrarse como nuevo cliente.
+	 * Cada dato se valida, si es incorrecto se muestra un mensaje de error y se
+	 * redirige al LOGIN.
+	 * En caso de que todos los datos sean correctos, se llama al mét. registrarse.
+	 */
 	public void recogerDatosNuevoUsuario() {
 
 		String dni, nombre, apellido, correo, contrasena;
