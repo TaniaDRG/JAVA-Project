@@ -20,8 +20,9 @@ public class Principal {
 
 	public static ControladorBD controlador;
 	public static ControladorEntradaYSalida controladorES;
-	private static ArrayList<Carrito> carritoTemporal = new ArrayList<Carrito>();
-	private static Compra compraFinal = new Compra();
+
+	public static ArrayList<Carrito> carritoTemporal = new ArrayList<Carrito>();
+	public static Compra compraFinal = new Compra();
 
 	/**
 	 * Empieza el programa, inicializa los controladores de BD y de entrada/salida,
@@ -31,7 +32,7 @@ public class Principal {
 		System.out.println("******************************");
 		System.out.println("         BIENVENIDO  ");
 		System.out.println("******************************");
-		
+
 		controlador = new ControladorBD("cine_daw");
 		controladorES = new ControladorEntradaYSalida();
 
@@ -146,10 +147,11 @@ public class Principal {
 	}
 
 	/**
-	 * Solicita el número de espectadores, valida el número(numeroDeEspectadores) y
-	 * va al mét. guardarDatosEnCarrito. Si número no valido cae en bucle.
+	 * Solicita el número de espectadores, valida el número (mét:
+	 * numeroDeEspectadores) y va al mét. guardarDatosEnCarrito. Si número no valido
+	 * cae en bucle.
 	 * 
-	 * @param sesionFinal= objeto Sesion (sesion elejida-tiene todos los datos
+	 * @param sesionFinal= objeto Sesion (sesión elejida-tiene todos los datos
 	 *                     necesitados)
 	 */
 	private static void elegirEspectadores(Sesion sesionFinal) {
@@ -164,6 +166,15 @@ public class Principal {
 
 	}
 
+	/**
+	 * Crea un objeto Carrito con la sesión seleccionada y el número de
+	 * espectadores, y lo añade al carritoTemporal (es un ArrayList, tipo Carrito,
+	 * para almacenar todo lo elegido)
+	 * 
+	 * @param sesionFinal=objeto Sesion (sesión elejida-tiene todos los datos
+	 *                           necesitados)
+	 * @param numEspectElegido
+	 */
 	public static void guardarDatosEnCarrito(Sesion sesionFinal, int numEspectElegido) {
 		Carrito carrito = new Carrito();
 		carrito.setSesion(sesionFinal);// guardo la fila/sesion selecionada en mi carrito(tiene todos los atrib. de
@@ -175,10 +186,16 @@ public class Principal {
 		carrito.setEntrada(entradaTemporal);
 
 		carritoTemporal.add(carrito);// aqui guardo la entrada realizada/ lo elegido en mi lista
-		mostrarSuEleccionDePelis(carritoTemporal);// ArrayList para almacenar todo lo elegido (Tipo: Carrito)
+		mostrarSuEleccionDePelis();// ArrayList para almacenar todo lo elegido (Tipo: Carrito)
 	}
 
-	public static void mostrarSuEleccionDePelis(ArrayList<Carrito> carritoTemporal) {
+	/**
+	 * Muestra todas las sesiones y películas que el usuario ha añadido al
+	 * carritotTemporal
+	 * 
+	 */
+	public static void mostrarSuEleccionDePelis() {
+
 		System.out.println("\nTu Carrito:");
 
 		for (Carrito carrito2 : carritoTemporal) {
@@ -187,12 +204,19 @@ public class Principal {
 			System.out.println("\nPelicula: " + carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:"
 					+ carrito2.getSesion().getFecha() + "\nHora Inicio:" + carrito2.getSesion().getHoraInicio()
 					+ "\nSala:" + carrito2.getSesion().getSala().getNomSala() + "\nPrecio:"
-					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de entradas:"
+					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de espectadores:"
 					+ carrito2.getEntrada().getNumEspectadores());
 		}
 		SeguirComprando();
 	}
 
+	/**
+	 * Permite al usuario decidir si desea seguir comprando más sesiones. Muestra un
+	 * menú, opciones: "Sí" o "No" y valida la entrada (mét. leerOpciones). Si elige
+	 * "Sí" (1), se redirige al menú de películas disponibles. Si elige "No" (2), se
+	 * dirige al mét. calcularPorcentajeDescuento(). Si elige cualquier otra cosa
+	 * entra en bucle.
+	 */
 	public static void SeguirComprando() {
 
 		int comprarMás;
@@ -215,6 +239,16 @@ public class Principal {
 		}
 	}
 
+	/**
+	 * Calcula el porcentaje de descuento que corresponde aplicar en la compra según
+	 * el número de películas distintas que el usuario ha agregado al
+	 * carritoTemporal.
+	 * 
+	 * Si el usuario ha comprado 2 películas distintas, se aplica un 20% de
+	 * descuento. Si ha comprado más de 2 películas distintas, se aplica un 30% de
+	 * descuento. Si solo ha comprado 1 película, no se aplica descuento
+	 * 
+	 */
 	public static void calcularPorcentajeDescuento() {
 
 		int peliculasDistintas = 0;
@@ -252,9 +286,10 @@ public class Principal {
 	}
 
 	/**
-	 * Método que calcula los datos que necesito almacenar en la BD y los guardo en
-	 * mi carritotemporal: descuento (tabla Entrada) y PrecioEntrada. También
-	 * obtengo el descuentoAplicado y precioTotal para la tabla Compra
+	 * Método que calcula los datos necesarios a almacenar/insertar en la BD
+	 * guardandolos en su correspondiente var./obj. carritotemporal: descuento y
+	 * PrecioEntrada (tabla Entrada). compraFinal: descuentoAplicado y precioTotal
+	 * (la tabla Compra).
 	 **/
 	public static void calcularDatosTabla(double porcentajeDescuento) {
 
@@ -284,7 +319,11 @@ public class Principal {
 		mostrarResumenDeCompra();
 	}
 
-	public static void mostrarResumenDeCompra() { // datos para tabla COMPRA
+	/**
+	 * Muestra un resumen detallado de la compra realizada. Calcula y muestra el
+	 * totalApagar tras aplicar descuentos.
+	 */
+	public static void mostrarResumenDeCompra() {
 
 		System.out.println("\n===== RESUMEN DE COMPRA ======");
 
@@ -308,6 +347,12 @@ public class Principal {
 		confirmarCompra();
 	}
 
+	/**
+	 * * Permite al usuario confirmar la compra. Muestra un menú, opciones: "Sí" o
+	 * "No" y valida la entrada (mét. leerOpciones). Si elige "Sí" (1), se dirige al
+	 * mét. mostrarMenuOpcionesDeLogin. Si elige "No" (2), se dirige al mét.
+	 * resetearCarrito y después al mét. iniciar.
+	 */
 	public static void confirmarCompra() {
 
 		int comprar;
@@ -324,43 +369,51 @@ public class Principal {
 
 		} else {
 			resetearCarrito();
-			System.out.println("Compra cancelada");
+			System.out.println("Compra cancelada\n");
 			iniciar();
 		}
 
 	}
 
+	/**
+	 * Muestra por consola el menú de opciones de login y gestiona la elección del
+	 * usuario (mét. leerOpciones). Si la opción no es valida entra en bucle
+	 */
 	public static void mostrarMenuOpcionesDeLogin() {
 
-		int opcion;
+		boolean salir = false;
 
-		do {
+		while (!salir) {
 			System.out.println("\n======== LOGIN ========");
 			System.out.println("1 - Inicie Sesión");
 			System.out.println("2 - Acceder como invitado");
 			System.out.println("3 - Registrarse");
 			System.out.println("4 - Cancelar compra");
-			opcion = controladorES.leerOpciones(1, 4);
+			int opcion = controladorES.leerOpciones(1, 4);
 
-		} while (opcion == -1);
-
-		switch (opcion) {
-		case 1:
-			controladorES.recogerDatosUsuarioExistente();
-			break;
-		case 2:
-			accedeComoInvitado();
-			break;
-		case 3:
-			controladorES.recogerDatosNuevoUsuario();
-			break;
-		case 4:
-			resetearCarrito();
-			System.out.println("Compra cancelada");
-			iniciar();
-			break;
+			switch (opcion) {
+			case 1:
+				boolean datosCorrectos = controladorES.recogerDatosUsuarioExistente();
+				if (datosCorrectos) {
+					salir = true;
+				}
+				break;
+			case 2:
+				accedeComoInvitado();
+				salir = true;
+				break;
+			case 3:
+				salir = true;
+				controladorES.recogerDatosNuevoUsuario();
+				break;
+			case 4:
+				salir = true;
+				resetearCarrito();
+				System.out.println("Compra cancelada");
+				iniciar();
+				break;
+			}
 		}
-
 	}
 
 	/**
@@ -369,19 +422,20 @@ public class Principal {
 	 * sino error y retorna a opciones de login
 	 **/
 
-	public static void iniciarSesion(String dniUsuario, String contraseñaUsuario) {
+	public static boolean iniciarSesion(String dniUsuario, String contraseñaUsuario) {
 
 		Cliente existeCliente = controlador.buscarClienteBD(dniUsuario, contraseñaUsuario);
 		/* guardo el resultado de la busqueda del usuario en obj existeCliente */
 
 		if (existeCliente.getDNI() == null) {
 			System.out.println("DNI o contraseña incorrectos.");
-			mostrarMenuOpcionesDeLogin();
+			return false;
 		} else {
 			System.out.println("Bienvenida/o " + existeCliente.getNomCliente());
 
 			compraFinal.setCliente(existeCliente);
 			finalizarCompra();
+			return true;
 		}
 	}
 
@@ -445,7 +499,7 @@ public class Principal {
 	private static void finalizarCompra() {
 
 		guardarCompra();
-		System.out.println("\nCompra realizada con éxito.");
+		System.out.println("\nCompra realizada con éxito.\n");
 		resetearCarrito();
 		iniciar();
 
@@ -500,16 +554,15 @@ public class Principal {
 
 	private static void generarFichero() {
 		ControladorFichero fichero = new ControladorFichero("ficheros/");
-		
-		boolean generado = fichero.escribirCompra("compras.txt", carritoTemporal, compraFinal.getCliente(), compraFinal);
-		
-		if(generado) {
+
+		boolean generado = fichero.escribirCompra("compras.txt", carritoTemporal, compraFinal.getCliente(),
+				compraFinal);
+
+		if (generado) {
 			System.out.println("Ticket de compra generado correctamente");
 		} else {
 			System.out.println("No se pudo generar el ticket de compra");
 		}
-
-
 
 	}
 

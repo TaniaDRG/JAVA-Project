@@ -251,6 +251,7 @@ public class ControladorBD {
 			return true;
 
 		} catch (SQLException e) {
+			//e.printStackTrace();
 			System.out.println("Error al insertar cliente (DNI o correo duplicado)");
 			return false;
 		}

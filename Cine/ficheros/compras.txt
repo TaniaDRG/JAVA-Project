@@ -207,3 +207,68 @@ DESCUENTO APLICADO: -0,00 €
 TOTAL A PAGAR: 18,00 €
 ====================================
 
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 01:49:28
+Cliente: Usuario
+----------
+Pelicula: Matrix Reloaded
+Fecha: 2026-02-06
+Hora: 20:30:00
+Sala: Sexta
+Entradas: 1
+Subtotal: 10,50 €
+------------------------------------
+TOTAL SIN DESCUENTO: 10,50 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 10,50 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 01:51:21
+Cliente: Usuario
+----------
+Pelicula: Cómo entrenar a tu dragón
+Fecha: 2026-02-03
+Hora: 18:35:00
+Sala: Octava
+Entradas: 1
+Subtotal: 7,50 €
+------------------------------------
+Pelicula: 50 Sombras de Grey
+Fecha: 2026-02-06
+Hora: 20:30:00
+Sala: Cuarta
+Entradas: 1
+Subtotal: 8,50 €
+------------------------------------
+TOTAL SIN DESCUENTO: 16,00 €
+DESCUENTO APLICADO: -3,20 €
+TOTAL A PAGAR: 12,80 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 04:55:13
+Cliente: Usuario
+----------
+Pelicula: Cómo entrenar a tu dragón
+Fecha: 2026-02-06
+Hora: 21:10:00
+Sala: Octava
+Entradas: 5
+Subtotal: 42,50 €
+------------------------------------
+Pelicula: 50 Sombras de Grey
+Fecha: 2026-02-04
+Hora: 19:00:00
+Sala: Segunda
+Entradas: 2
+Subtotal: 10,00 €
+------------------------------------
+TOTAL SIN DESCUENTO: 52,50 €
+DESCUENTO APLICADO: -10,50 €
+TOTAL A PAGAR: 42,00 €
+====================================
+

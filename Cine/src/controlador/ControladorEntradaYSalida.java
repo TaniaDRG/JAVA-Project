@@ -65,7 +65,10 @@ public class ControladorEntradaYSalida {
 
 	}
 
-	/** Método genérico para leer un número dentro de un rango. **/
+	/**
+	 * Método genérico para leer un número dentro de un rango. Si está por fuera de
+	 * ese rango devuelve -1. Sino devuelve el número elegido.
+	 **/
 	public int leerOpciones(int min, int max) {
 
 		try {
@@ -76,14 +79,17 @@ public class ControladorEntradaYSalida {
 				return -1;
 			}
 			return opcion;
-			
+
 		} catch (NumberFormatException e) {
 			System.out.println("Error: se esperaba un número.");
 			return -1;
 		}
 	}
 
-	public void recogerDatosUsuarioExistente() {
+	/**
+	 * Solicita al usuariosu DNI y contraseña para iniciar sesión.
+	 */
+	public boolean recogerDatosUsuarioExistente() {
 
 		String dniUsuario;
 		String contraseñaUsuario;
@@ -92,19 +98,22 @@ public class ControladorEntradaYSalida {
 		dniUsuario = sc.nextLine().trim();
 		if (dniUsuario.isEmpty()) {
 			System.out.println("Error, DNI incorrecto.");
-			return;
+			return false;
 		}
 
 		System.out.println("Escribe tu contraseña");
 		contraseñaUsuario = sc.nextLine().trim();
 		if (contraseñaUsuario.isEmpty()) {
 			System.out.println("Error, contraseña incorrecta.");
-			return;
+			return false;
 		}
 
-		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
+		boolean loginExitoso = Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
+		return loginExitoso;
 
 	}
+	
+	
 
 	public void recogerDatosNuevoUsuario() {
 
