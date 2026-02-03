@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import modelo.Carrito;
 import modelo.Cliente;
 import modelo.Compra;
@@ -16,9 +15,6 @@ import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Sesion;
 
-/**
- * 
- */
 public class ControladorBD {
 
 	private Connection conexion;// Guarda la conexión con la base de datos.
@@ -130,7 +126,7 @@ public class ControladorBD {
 			consulta.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -154,7 +150,8 @@ public class ControladorBD {
 
 		String query = " SELECT S.IdSesion, S.Fecha, S.HoraInicio, S.HoraFin, S.Precio, Sa.IdSala, Sa.NomSala, P.IdPeli, P.NomPeli "
 				+ "FROM Sesion S join Pelicula P on S.IdPeli = P.IdPeli join Sala Sa ON S.IdSala = Sa.IdSala "
-				+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida + "' AND (S.Fecha > CURDATE() OR (S.Fecha = CURDATE() AND S.HoraInicio > CURTIME())) " 
+				+ "WHERE S.IdPeli= '" + IdPeli + "' and S.Fecha = '" + fechaElegida
+				+ "' AND (S.Fecha > CURDATE() OR (S.Fecha = CURDATE() AND S.HoraInicio > CURTIME())) "
 				+ "ORDER BY S.HoraInicio ";
 		// S.IdPeli = ? AND S.Fecha = ?
 		try {
@@ -188,15 +185,21 @@ public class ControladorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*Collections.sort(sesionesDisponibles, 
-		    Comparator.comparing(Sesion::getHoraInicio)
-		);*/
 
 		return sesionesDisponibles;
 
 	}
 
+	/**
+	 * Busca un cliente en la base de datos según su DNI y contraseña. Se realiza
+	 * una consulta segura utilizando PreparedStatement para evitar SQL Injection.
+	 * Si se encuentra un cliente que coincide con el DNI y la contraseña, se
+	 * devuelven sus datos en un obj. Cliente
+	 * 
+	 * @param dniUsuario
+	 * @param contrasenaUsuario
+	 * @return
+	 */
 	public Cliente buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
 
 		Cliente clienteBuscado = new Cliente();
@@ -233,6 +236,13 @@ public class ControladorBD {
 
 	}
 
+	/**
+	 * Inserta un nuevo cliente en la base de datos devolviendo true. Si ocurre
+	 * algun problema en la inserción mensaje de esrror y devuelve false.
+	 * 
+	 * @param nuevoCliente
+	 * @return true/false
+	 */
 	public boolean insertarCliente(Cliente nuevoCliente) {
 
 		String query = "INSERT INTO Cliente (DNI, NomCliente, Apellido, Correo, Contraseña) "
@@ -251,6 +261,7 @@ public class ControladorBD {
 			return true;
 
 		} catch (SQLException e) {
+
 			System.out.println("Error al insertar cliente (DNI o correo duplicado)");
 			return false;
 		}

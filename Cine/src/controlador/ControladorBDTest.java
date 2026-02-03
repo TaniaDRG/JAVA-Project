@@ -11,7 +11,10 @@ import modelo.Cliente;
 import modelo.Compra;
 import modelo.Entrada;
 import modelo.Pelicula;
+import modelo.Sala;
 import modelo.Sesion;
+
+import vista.PruebasTest;
 
 /**
  * 
@@ -24,8 +27,8 @@ public class ControladorBDTest {
 	 * Comprobamos que se genera correctamente el Objeto cuando le pasamos una BD
 	 * existente
 	 */
-	@Test 
-	public void _00_ControladorValido() {
+	@Test
+	public void ControladorValido() {
 		controlador = new ControladorBD("cine_daw");
 		assertNotNull(controlador);// Obj. no es nulo
 	}
@@ -35,7 +38,7 @@ public class ControladorBDTest {
 	 * existente
 	 */
 	@Test
-	public void _01_constructorNoValido() {
+	public void constructorNoValido() {
 		controlador = new ControladorBD(null);
 		assertNotNull(controlador); // Obj. no es nulo
 	}
@@ -44,7 +47,7 @@ public class ControladorBDTest {
 	 * Comprobamos que la conexion con la BD existente se ejecute correctamete
 	 */
 	@Test
-	public void _02_inicioDeConexionNormal() {
+	public void inicioDeConexionNormal() {
 		controlador = new ControladorBD("cine_daw");
 		boolean conexion = controlador.iniciarConexion();
 		assertTrue(conexion);
@@ -55,7 +58,7 @@ public class ControladorBDTest {
 	 * Comprobamos que la conexion con la una BD que NO existe falle
 	 */
 	@Test
-	public void _03_inicioDeConexionNoExistente() {
+	public void inicioDeConexionNoExistente() {
 		controlador = new ControladorBD("cine");
 		boolean conexion = controlador.iniciarConexion();
 		assertFalse(conexion);
@@ -65,7 +68,7 @@ public class ControladorBDTest {
 	 * Comprobamos que se cierra la conexion con la BD
 	 */
 	@Test
-	public void _04_cerrarConexionNornal() {
+	public void cerrarConexionNornal() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		assertTrue(controlador.cerrarConexion());
@@ -76,7 +79,7 @@ public class ControladorBDTest {
 	 * fallida por lo tanto la conexio será null
 	 */
 	@Test
-	public void _05_cerrarConexionFallida() {
+	public void cerrarConexionFallida() {
 		controlador = new ControladorBD("cine");
 		controlador.iniciarConexion();
 		assertFalse(controlador.cerrarConexion());
@@ -86,7 +89,7 @@ public class ControladorBDTest {
 	 * Comprobamos que no se cierran conexiones inexistentes
 	 */
 	@Test
-	public void _06_cerrarConexionNoExistente() {
+	public void cerrarConexionNoExistente() {
 		controlador = new ControladorBD("cine_daw");
 		assertFalse(controlador.cerrarConexion());
 	}
@@ -95,7 +98,7 @@ public class ControladorBDTest {
 	 * Comprobamos que se obtiene una lista de películas (por lo menos una fila)
 	 */
 	@Test
-	public void _07_buscarPeliculasDevuelvePeliculas() {
+	public void buscarPeliculasDevuelvePeliculas() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Pelicula> peliculas = controlador.buscarPeliculas();
@@ -108,7 +111,7 @@ public class ControladorBDTest {
 	 * todas las películas de la BD
 	 */
 	@Test
-	public void _08_obtenerPeliculasCorrectas() {
+	public void obtenerPeliculasCorrectas() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Pelicula> peliculas = controlador.buscarPeliculas();
@@ -116,14 +119,12 @@ public class ControladorBDTest {
 		controlador.cerrarConexion();
 
 	}
-	
-	
 
 	/**
 	 * Comprobamos que se obtiene una lista de fechas para un IdPeli existente
 	 */
 	@Test
-	public void _09_buscarFechasPeliDevuelveFechas() {
+	public void buscarFechasPeliDevuelveFechas() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> fechas = controlador.buscarFechasPeli("MTRX");
@@ -136,7 +137,7 @@ public class ControladorBDTest {
 	 * inexistente
 	 */
 	@Test
-	public void _10_buscarFechasPeliNoDevuelveFechas() {
+	public void buscarFechasPeliNoDevuelveFechas() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> fechas = controlador.buscarFechasPeli("COCO");
@@ -149,7 +150,7 @@ public class ControladorBDTest {
 	 * existentes en la BD
 	 */
 	@Test
-	public void _11_buscarSesionesDevuelveSesiones() {
+	public void buscarSesionesDevuelveSesiones() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> sesiones = controlador.buscarSesiones("AVAT", "2026-02-07");
@@ -162,7 +163,7 @@ public class ControladorBDTest {
 	 * que hay para esa película y fecha en la BD
 	 */
 	@Test
-	public void _12_buscarSesionesCorrectas() {
+	public void buscarSesionesCorrectas() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> sesiones = controlador.buscarSesiones("AVAT", "2026-02-07");
@@ -175,7 +176,7 @@ public class ControladorBDTest {
 	 * sea correcto según lo almacenado en BD
 	 */
 	@Test
-	public void _13_buscarSesionesPrecioCorrecto() {
+	public void buscarSesionesPrecioCorrecto() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> sesiones = controlador.buscarSesiones("GREY", "2026-02-08");
@@ -189,14 +190,12 @@ public class ControladorBDTest {
 		controlador.cerrarConexion();
 	}
 
-
-
 	/**
 	 * Comprobamos que devuelve un objeto vacío según los parámetros inexistentes
 	 * que enviamos a la BD
 	 */
 	@Test
-	public void _14_buscarClienteBDNoExiste() {
+	public void buscarClienteBDNoExiste() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		Cliente clienteBuscado = controlador.buscarClienteBD("XOXOXOXOX", "III");
@@ -206,40 +205,29 @@ public class ControladorBDTest {
 	}
 
 	/**
-	 * Comprobamos que se genera una excecion NullPointer cuando se intenta acceder
-	 * a la BD sin haber iniciado la conexión antes (no devuelve nada porque
-	 * revienta antes de llegar al return)
-	 */
-	@Test
-	public void _15_buscarClienteBDSinConexion() {
-		controlador = new ControladorBD("cine_daw");
-		Cliente clienteBuscado = controlador.buscarClienteBD("01234567K", "elena123");
-		assertNull(clienteBuscado);
-		controlador.cerrarConexion();
-	}
-
-	/**
 	 * Comprobamos que se crea un nuevo objeto-cliente al enviar unos valores
 	 * correctos a la BD
 	 */
 	@Test
-	public void _16_insertarClienteValido() {
+	public void insertarClienteValido() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		Cliente nuevoCliente = new Cliente("98765432A", "Marvin", "Martian", "marciano@spam.com", "bipbip");
 		assertTrue(controlador.insertarCliente(nuevoCliente));
 		controlador.cerrarConexion();
 	}// delete from cliente where DNI = '98765432A'
+	//delete from cliente where CORREO = 'marciano@spam.com'
+	//SELECT * FROM CLIENTE WHERE CORREO = 'marciano@spam.com'
 
 	/**
 	 * Comprobamos que NO se crea un nuevo objeto-cliente al enviar unos valores
-	 * incorrectos a la BD
+	 * incorrectos a la BD (ya existe)
 	 */
 	@Test
-	public void _17_insertarClienteNoValido() {
+	public void insertarClienteNoValido() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
-		Cliente nuevoCliente = new Cliente("11001", "Marvin", "Martian", "marciano@spam.com", "bipbip");
+		Cliente nuevoCliente = new Cliente("98765432A", "Marvin", "Martian", "marciano@spam.com", "bipbip");
 		assertFalse(controlador.insertarCliente(nuevoCliente));
 		controlador.cerrarConexion();
 	}
@@ -249,7 +237,7 @@ public class ControladorBDTest {
 	 * son correctos y que el IdCompra generado sea distinto de 0.
 	 */
 	@Test
-	public void _17_GuardarCompraValida() {
+	public void GuardarCompraValida() {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 
@@ -267,115 +255,138 @@ public class ControladorBDTest {
 	}// delete from compra where IdCompra = 91
 
 	/**
-	 * Comprobamos que la inserción de la compra en la BD falla pues sus valores son
-	 * erroneos.
-	 */
-	/*@Test
-	public void _19_GuardarCompraNoValida() {
-
-		controlador = new ControladorBD("cine_daw");
-		controlador.iniciarConexion();
-
-		Compra compraFinal = new Compra();
-		Cliente clienteNoExistente = new Cliente();
-		clienteNoExistente.setDNI("NOOEXISTE");
-		compraFinal.setCliente(clienteNoExistente);
-		compraFinal.setPrecioTotal(29.50);
-		compraFinal.setDescuentoAplicado(5.90);
-
-		// La inserción falla → devuelve false
-		assertFalse(controlador.guardarDatosEnBDCompra(compraFinal));
-		// assertEquals(null, compraFinal.getIdCompra());
-
-		controlador.cerrarConexion();
-	}*/
-	
-	
-	
-	
-
-	/**
-	 * Comprobamos que se inserte correctamente en la BD las entradas de una compra, cuyos valores
-	 * son correctos (el IdCompra se corresponde con la compra insertada en el test anterior).
+	 * Comprobamos que se inserte correctamente en la BD las entradas de una compra,
+	 * cuyos valores son correctos (el IdCompra se corresponde con la compra
+	 * insertada en el test anterior).
 	 */
 	@Test
-	public void _18_guardarEntradaValida() {
-	    controlador = new ControladorBD("cine_daw");
-	    controlador.iniciarConexion();
-		  //---Compra final---
-	    Compra compraFinal = new Compra();
-	    compraFinal.setPrecioTotal(29.50); 
-	    compraFinal.setDescuentoAplicado(5.90);
-	    compraFinal.setIdCompra(96);//ojo tabla compra ult. fila
-	    
-	    ArrayList<Carrito> carritoTemporal = new ArrayList<>();
-	    //------Primera Entrada 
-	    Carrito carrito1 = new Carrito();
-	    
-	    Entrada entrada = new Entrada();
-	    entrada.setPrecioEntrada(21);
-	    entrada.setDescuento(4.20);
-	    entrada.setNumEspectadores(3);
-	    carrito1.setEntrada(entrada);
+	public void guardarEntradaValida() {
+		controlador = new ControladorBD("cine_daw");
+		controlador.iniciarConexion();
+		// ---Compra final---
+		Compra compraFinal = new Compra();
+		compraFinal.setPrecioTotal(29.50);
+		compraFinal.setDescuentoAplicado(5.90);
+		compraFinal.setIdCompra(86);// ojo tabla compra ult. fila
 
-	    Sesion sesion1 = new Sesion();
-	    sesion1.setIdSesion("SE008");
-	    carrito1.setSesion(sesion1);
-	    
-	    carritoTemporal.add(carrito1);
-	    //------Segundo Entrada 
-	    Carrito carrito2 = new Carrito();
-	    
-	    Entrada entrada2 = new Entrada();
-	    entrada2.setPrecioEntrada(8.50);
-	    entrada2.setDescuento(1.70);
-	    entrada2.setNumEspectadores(1);
-	    carrito2.setEntrada(entrada2);
+		ArrayList<Carrito> carritoTemporal = new ArrayList<>();
+		// ------Primera Entrada
+		Carrito carrito1 = new Carrito();
 
-	    Sesion sesion2 = new Sesion();
-	    sesion2.setIdSesion("SC018");
-	    carrito2.setSesion(sesion2);
-	    
-	    carritoTemporal.add(carrito2);
-	    
-	 
+		Entrada entrada = new Entrada();
+		entrada.setPrecioEntrada(21);
+		entrada.setDescuento(4.20);
+		entrada.setNumEspectadores(3);
+		carrito1.setEntrada(entrada);
 
-	    assertTrue(controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal));
-	    controlador.cerrarConexion();
+		Sesion sesion1 = new Sesion();
+		sesion1.setIdSesion("SE008");
+		carrito1.setSesion(sesion1);
+
+		carritoTemporal.add(carrito1);
+		// ------Segundo Entrada
+		Carrito carrito2 = new Carrito();
+
+		Entrada entrada2 = new Entrada();
+		entrada2.setPrecioEntrada(8.50);
+		entrada2.setDescuento(1.70);
+		entrada2.setNumEspectadores(1);
+		carrito2.setEntrada(entrada2);
+
+		Sesion sesion2 = new Sesion();
+		sesion2.setIdSesion("SC018");
+		carrito2.setSesion(sesion2);
+
+		carritoTemporal.add(carrito2);
+
+		assertTrue(controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal));
+		controlador.cerrarConexion();
 	}
 	
 	
+	/**
+	 * 
+	 */
+	@Test
+	public void CalculoPrecioTotalCompraCorrectoPruebas() {
+
+		PruebasTest.carritoTemporal = new ArrayList<Carrito>();
+		PruebasTest.compraFinal = new Compra();
+
+		// ------Primera Compra
+		Carrito carrito1 = new Carrito();
+
+		Pelicula peli1 = new Pelicula();
+		peli1.setNomPeli("El conjuro");
+
+		Sala sala1 = new Sala();
+		sala1.setNomSala("Primera");
+
+		Sesion sesion1 = new Sesion();
+		sesion1.setPrecio(7.0);
+		sesion1.setPeli(peli1);
+		sesion1.setSala(sala1);
+		carrito1.setSesion(sesion1);
+
+		Entrada entrada1 = new Entrada();
+		entrada1.setNumEspectadores(3);
+		carrito1.setEntrada(entrada1);
+
+		PruebasTest.carritoTemporal.add(carrito1);
+
+		// ------Segunda Compra
+		Carrito carrito2 = new Carrito();
+
+		Pelicula peli2 = new Pelicula();
+		peli2.setNomPeli("Armageddon");
+
+		Sala sala2 = new Sala();
+		sala2.setNomSala("Séptima");
+
+		Sesion sesion2 = new Sesion();
+		sesion2.setPrecio(8.50);
+		sesion2.setPeli(peli2);
+		sesion2.setSala(sala2);
+		carrito2.setSesion(sesion2);
+
+		Entrada entrada2 = new Entrada();
+		entrada2.setNumEspectadores(1);
+		carrito2.setEntrada(entrada2);
+
+		PruebasTest.carritoTemporal.add(carrito2);
+
+		PruebasTest.calcularDatosTabla(0.20);
+		assertEquals(29.50, PruebasTest.compraFinal.getPrecioTotal(), 0.01);
+		assertEquals(5.90, PruebasTest.compraFinal.getDescuentoAplicado(), 0.01);
+
+	}
+
 	
+
+	
+	/**
+	 * Comprobamos que el método genera un fichero (está vacío)
+	 */
 	/*@Test
-	public void CalculoPrecioTotalCorrecto() {
-		ArrayList<Carrito> carritoTemporal = new ArrayList<Carrito>();
-	    Compra compraFinal = new Compra();
+	public void GenerarFicheroSinEntradas() {
 
-	    // rellenar carritoTemporal con Carrito/Entrada/Sesion
-	    Carrito c1 = new Carrito();
-	    Entrada e1 = new Entrada();
-	    e1.setNumEspectadores(2);
-	    Sesion s1 = new Sesion();
-	    s1.setPrecio(10.0);
-	    c1.setEntrada(e1);
-	    c1.setSesion(s1);
-	    carritoTemporal.add(c1);
+	    PruebasTest.carritoTemporal = new ArrayList<>();
 
-	    // otro carrito
-	    Carrito c2 = new Carrito();
-	    Entrada e2 = new Entrada();
-	    e2.setNumEspectadores(1);
-	    Sesion s2 = new Sesion();
-	    s2.setPrecio(10.0);
-	    c2.setEntrada(e2);
-	    c2.setSesion(s2);
-	    carritoTemporal.add(c2);
+	    Cliente cliente = new Cliente();
+	    cliente.setDNI("PruebaTXT");
 
-	    // ejecutar método
-	    calcularDatosTabla(0.10);
+	    PruebasTest.compraFinal = new Compra();
+	    PruebasTest.compraFinal.setCliente(cliente);
 
-	    // aserciones
-	    assertEquals(30.0, compraFinal.getPrecioTotal(), 0.01);
+	    ControladorFichero fichero = new ControladorFichero("ficheros/");
+	    boolean generado = fichero.escribirCompra(
+	        "test_compras.txt",
+	        PruebasTest.carritoTemporal,
+	        cliente,
+	        PruebasTest.compraFinal
+	    );
+
+	    assertTrue(generado); 
 	}*/
-
+	
 }

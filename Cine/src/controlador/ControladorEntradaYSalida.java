@@ -65,7 +65,10 @@ public class ControladorEntradaYSalida {
 
 	}
 
-	/** Método genérico para leer un número dentro de un rango. **/
+	/**
+	 * Método genérico para leer un número dentro de un rango. Si está por fuera de
+	 * ese rango devuelve -1. Sino devuelve el número elegido.
+	 **/
 	public int leerOpciones(int min, int max) {
 
 		try {
@@ -76,13 +79,18 @@ public class ControladorEntradaYSalida {
 				return -1;
 			}
 			return opcion;
-			
+
 		} catch (NumberFormatException e) {
 			System.out.println("Error: se esperaba un número.");
 			return -1;
 		}
 	}
 
+	/**
+	 * Solicita al usuario su DNI y contraseña para iniciar sesión. Valida que los
+	 * campos no estén vacíos. Si el DNI o la contraseña vacíos muestra mensaje de
+	 * error y vuelve a LOGIN. Si todo correcto va al mét. iniciarSesion
+	 */
 	public void recogerDatosUsuarioExistente() {
 
 		String dniUsuario;
@@ -92,20 +100,24 @@ public class ControladorEntradaYSalida {
 		dniUsuario = sc.nextLine().trim();
 		if (dniUsuario.isEmpty()) {
 			System.out.println("Error, DNI incorrecto.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		System.out.println("Escribe tu contraseña");
 		contraseñaUsuario = sc.nextLine().trim();
 		if (contraseñaUsuario.isEmpty()) {
 			System.out.println("Error, contraseña incorrecta.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
-
 		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
-
 	}
 
+	/**
+	 * Solicita al usuario los datos necesarios para registrarse como nuevo cliente.
+	 * Cada dato se valida, si es incorrecto se muestra un mensaje de error y se
+	 * redirige al LOGIN.
+	 * En caso de que todos los datos sean correctos, se llama al mét. registrarse.
+	 */
 	public void recogerDatosNuevoUsuario() {
 
 		String dni, nombre, apellido, correo, contrasena;
@@ -117,35 +129,35 @@ public class ControladorEntradaYSalida {
 
 		if (dni.isEmpty() || dni.length() != 9) {
 			System.out.println("Error: DNI incorrecto.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		System.out.print("Nombre: ");
 		nombre = sc.nextLine().trim();
 		if (nombre.isEmpty()) {
 			System.out.println("Error, el nombre es obligatorio.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		System.out.print("Apellido: ");
 		apellido = sc.nextLine().trim();
 		if (apellido.isEmpty()) {
 			System.out.println("Error, el apellido es obligatorio.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		System.out.print("Correo electrónico: ");
 		correo = sc.nextLine().trim();
 		if (correo.isEmpty() || !correo.contains("@")) {
 			System.out.println("Error, el correo electrónico no es válido.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		System.out.print("Contraseña: ");
 		contrasena = sc.nextLine().trim();
 		if (contrasena.isEmpty()) {
 			System.out.println("Error: la contraseña es obligatoria.");
-			return;
+			Principal.mostrarMenuOpcionesDeLogin();
 		}
 
 		Principal.registrarse(dni, nombre, apellido, correo, contrasena);
