@@ -21,8 +21,8 @@ public class Principal {
 	public static ControladorBD controlador;
 	public static ControladorEntradaYSalida controladorES;
 
-	public static ArrayList<Carrito> carritoTemporal = new ArrayList<Carrito>();
-	public static Compra compraFinal = new Compra();
+	private static ArrayList<Carrito> carritoTemporal = new ArrayList<Carrito>();
+	private static Compra compraFinal = new Compra();
 
 	/**
 	 * Empieza el programa, inicializa los controladores de BD y de entrada/salida,
@@ -131,7 +131,7 @@ public class Principal {
 					+ ", Sala: " + sesion.getSala().getIdSala() + ", Precio: "
 					+ String.format("%.2f", sesion.getPrecio()) + "€");
 			cont++;
-		} // QUITAR FECHA DEL SYSO
+		}
 
 		int numElegido = -1;
 
@@ -177,16 +177,15 @@ public class Principal {
 	 */
 	public static void guardarDatosEnCarrito(Sesion sesionFinal, int numEspectElegido) {
 		Carrito carrito = new Carrito();
-		carrito.setSesion(sesionFinal);// guardo la fila/sesion selecionada en mi carrito(tiene todos los atrib. de
-										// buscarSesiones())
+		carrito.setSesion(sesionFinal);
 
 		Entrada entradaTemporal = new Entrada();
 		entradaTemporal.setNumEspectadores(numEspectElegido);
 
 		carrito.setEntrada(entradaTemporal);
 
-		carritoTemporal.add(carrito);// aqui guardo la entrada realizada/ lo elegido en mi lista
-		mostrarSuEleccionDePelis();// ArrayList para almacenar todo lo elegido (Tipo: Carrito)
+		carritoTemporal.add(carrito);
+		mostrarSuEleccionDePelis();
 	}
 
 	/**
@@ -382,7 +381,7 @@ public class Principal {
 	public static void mostrarMenuOpcionesDeLogin() {
 
 		int opcion = 0;
-		
+
 		do {
 			System.out.println("\n======== LOGIN ========");
 			System.out.println("1 - Inicie Sesión");
@@ -394,44 +393,45 @@ public class Principal {
 		} while (opcion == -1);
 
 		switch (opcion) {
-			case 1:
-				controladorES.recogerDatosUsuarioExistente();
-				break;
-			case 2:
-				accedeComoInvitado();
-				break;
-			case 3:
-				controladorES.recogerDatosNuevoUsuario();
-				break;
-			case 4:
-				resetearCarrito();
-				System.out.println("Compra cancelada");
-				iniciar();
-				break;
+		case 1:
+			controladorES.recogerDatosUsuarioExistente();
+			break;
+		case 2:
+			accedeComoInvitado();
+			break;
+		case 3:
+			controladorES.recogerDatosNuevoUsuario();
+			break;
+		case 4:
+			resetearCarrito();
+			System.out.println("Compra cancelada");
+			iniciar();
+			break;
 		}
 
 	}
 
 	/**
 	 * Método que recibe como parámetros:dniUsuario,contraseñaUsuario para buscarlos
-	 * en la base de datos. Si existe guardo el obj cliente en el obj compraFinal,
-	 * sino error y retorna a opciones de login
+	 * en la base de datos. Si existe, guarda el obj. cliente en el obj. compraFinal
+	 * y se dirige al mét. finalizarCompra; sino error y retorna a opciones de login
 	 **/
 
-	public static boolean iniciarSesion(String dniUsuario, String contraseñaUsuario) {
+	public static void iniciarSesion(String dniUsuario, String contraseñaUsuario) {
 
 		Cliente existeCliente = controlador.buscarClienteBD(dniUsuario, contraseñaUsuario);
 		/* guardo el resultado de la busqueda del usuario en obj existeCliente */
 
 		if (existeCliente.getDNI() == null) {
 			System.out.println("DNI o contraseña incorrectos.");
-			return false;
+			mostrarMenuOpcionesDeLogin();
+
 		} else {
 			System.out.println("Bienvenida/o " + existeCliente.getNomCliente());
 
 			compraFinal.setCliente(existeCliente);
 			finalizarCompra();
-			return true;
+
 		}
 	}
 
@@ -492,6 +492,11 @@ public class Principal {
 
 	}
 
+	/**
+	 * Se dirige al mét. guardarCompra, muestra un mensaje de confirmación al
+	 * usuario y reinicia el carrito para comenzar una nueva compra desde el inicio
+	 * del programa.
+	 */
 	private static void finalizarCompra() {
 
 		guardarCompra();
@@ -501,6 +506,9 @@ public class Principal {
 
 	}
 
+	/**
+	 * 
+	 */
 	private static void guardarCompra() {
 
 		boolean compraInsertada = controlador.guardarDatosEnBDCompra(compraFinal);

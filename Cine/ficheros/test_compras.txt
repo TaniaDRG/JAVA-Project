@@ -1,0 +1,30 @@
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 16:45:51
+Cliente: null
+----------
+TOTAL SIN DESCUENTO: 0,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 0,00 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 16:52:41
+Cliente: null
+----------
+TOTAL SIN DESCUENTO: 0,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 0,00 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 03/02/2026 16:55:31
+Cliente: null
+----------
+TOTAL SIN DESCUENTO: 0,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 0,00 €
+====================================
+

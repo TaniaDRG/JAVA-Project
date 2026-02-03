@@ -13,7 +13,8 @@ import modelo.Entrada;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Sesion;
-import vista.Principal;
+
+import vista.PruebasTest;
 
 /**
  * 
@@ -301,6 +302,91 @@ public class ControladorBDTest {
 		assertTrue(controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal));
 		controlador.cerrarConexion();
 	}
+	
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void CalculoPrecioTotalCompraCorrectoPruebas() {
 
+		PruebasTest.carritoTemporal = new ArrayList<Carrito>();
+		PruebasTest.compraFinal = new Compra();
+
+		// ------Primera Compra
+		Carrito carrito1 = new Carrito();
+
+		Pelicula peli1 = new Pelicula();
+		peli1.setNomPeli("El conjuro");
+
+		Sala sala1 = new Sala();
+		sala1.setNomSala("Primera");
+
+		Sesion sesion1 = new Sesion();
+		sesion1.setPrecio(7.0);
+		sesion1.setPeli(peli1);
+		sesion1.setSala(sala1);
+		carrito1.setSesion(sesion1);
+
+		Entrada entrada1 = new Entrada();
+		entrada1.setNumEspectadores(3);
+		carrito1.setEntrada(entrada1);
+
+		PruebasTest.carritoTemporal.add(carrito1);
+
+		// ------Segunda Compra
+		Carrito carrito2 = new Carrito();
+
+		Pelicula peli2 = new Pelicula();
+		peli2.setNomPeli("Armageddon");
+
+		Sala sala2 = new Sala();
+		sala2.setNomSala("Séptima");
+
+		Sesion sesion2 = new Sesion();
+		sesion2.setPrecio(8.50);
+		sesion2.setPeli(peli2);
+		sesion2.setSala(sala2);
+		carrito2.setSesion(sesion2);
+
+		Entrada entrada2 = new Entrada();
+		entrada2.setNumEspectadores(1);
+		carrito2.setEntrada(entrada2);
+
+		PruebasTest.carritoTemporal.add(carrito2);
+
+		PruebasTest.calcularDatosTabla(0.20);
+		assertEquals(29.50, PruebasTest.compraFinal.getPrecioTotal(), 0.01);
+		assertEquals(5.90, PruebasTest.compraFinal.getDescuentoAplicado(), 0.01);
+
+	}
+
+	
+
+	
+	/**
+	 * Comprobamos que el método genera un fichero (está vacío)
+	 */
+	/*@Test
+	public void GenerarFicheroSinEntradas() {
+
+	    PruebasTest.carritoTemporal = new ArrayList<>();
+
+	    Cliente cliente = new Cliente();
+	    cliente.setDNI("PruebaTXT");
+
+	    PruebasTest.compraFinal = new Compra();
+	    PruebasTest.compraFinal.setCliente(cliente);
+
+	    ControladorFichero fichero = new ControladorFichero("ficheros/");
+	    boolean generado = fichero.escribirCompra(
+	        "test_compras.txt",
+	        PruebasTest.carritoTemporal,
+	        cliente,
+	        PruebasTest.compraFinal
+	    );
+
+	    assertTrue(generado); 
+	}*/
 	
 }

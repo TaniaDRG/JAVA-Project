@@ -87,7 +87,9 @@ public class ControladorEntradaYSalida {
 	}
 
 	/**
-	 * Solicita al usuariosu DNI y contraseña para iniciar sesión.
+	 * Solicita al usuario su DNI y contraseña para iniciar sesión. Valida que los
+	 * campos no estén vacíos. Si el DNI o la contraseña vacíos muestra mensaje de error y vuelve a LOGIN.
+	 *Si todo correcto va al mét. iniciarSesion
 	 */
 	public void recogerDatosUsuarioExistente() {
 
@@ -107,10 +109,8 @@ public class ControladorEntradaYSalida {
 			System.out.println("Error, contraseña incorrecta.");
 			Principal.mostrarMenuOpcionesDeLogin();
 		}
-
+		Principal.iniciarSesion(dniUsuario, contraseñaUsuario);
 	}
-	
-	
 
 	public void recogerDatosNuevoUsuario() {
 

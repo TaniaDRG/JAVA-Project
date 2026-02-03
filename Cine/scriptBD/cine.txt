@@ -1,0 +1,575 @@
+create database cine_daw collate utf8mb4_spanish_ci;
+grant all on cine_daw.* to daw;
+
+create table Sala
+(IdSala  int unsigned primary key,
+NomSala varchar(50) not null);
+
+create table Pelicula
+(IdPeli char(4) primary key,
+NomPeli varchar(50) not null,
+duracion int unsigned not null,
+genero varchar(40) not null,
+precio numeric(4,2) not null constraint CK_PrecioPelicula check (Precio between 3 and 20));
+
+create table Cliente
+(DNI char(9) primary key,
+NomCliente varchar(40) not null,
+Apellido varchar(40) not null,
+Correo varchar(50) not null unique,
+Contraseña blob(40) not null);
+
+create table Compra
+(IdCompra int unsigned auto_increment primary key,
+Fecha date not null,
+Hora time not null,
+PrecioTotal numeric(6, 2) not null constraint ck_PrecioTotal check (PrecioTotal > 0),
+DescuentoAplicado numeric(6, 2),
+DNI char(9) not null,
+constraint FK_DNICliente foreign key (DNI) references Cliente(DNI) on update cascade,
+constraint CK_TotalDescuentoApli check (DescuentoAplicado < PrecioTotal));
+
+create table Sesion
+(IdSesion char (5) primary key,
+Fecha date not null,
+HoraInicio time not null,
+HoraFin time not null,
+Precio numeric (4,2) not null constraint CK_PrecioEntrada check (Precio between 3 and 20),
+IdSala  int unsigned not null,
+IdPeli char (4) not null,
+constraint FK_Id_Sala foreign key (IdSala) references Sala (IdSala) on update cascade,
+constraint FK_Id_Peli foreign key (IdPeli) references Pelicula (IdPeli) on update cascade,
+constraint UQ_Emision unique (IdSala ,Fecha, HoraInicio));
+
+
+create table Entrada
+(IdEntrada int unsigned auto_increment primary key,
+PrecioEntrada numeric (5, 2) not null constraint CK_PrecioPorSesion check (PrecioEntrada between 3 and 999),
+Descuento numeric (5,2), 
+NumEspectadores int unsigned not null constraint CK_Espectadores check (NumEspectadores between 1 and 5),  
+IdCompra  int unsigned not null,
+IdSesion char (5) not null,
+constraint FK_Id_Compra foreign key (IdCompra) references Compra (IdCompra) on update cascade, 
+constraint FK_Id_Sesion foreign key (IdSesion) references Sesion (IdSesion) on update cascade,
+constraint CK_DescuentoAplicado check (Descuento < PrecioEntrada));
+
+
+
+
+
+
+
+
+
+
+insert into Pelicula values ('AVAT', 'Avatar: Fuego y ceniza', 192 , 'Ciencia ficción', 3); 
+insert into Pelicula values ('GREY', '50 Sombras de Grey', 120 , 'Drama', 3);  
+insert into Pelicula values ('MTRX', 'Matrix Reloaded', 132 , 'Ciencia ficción', 3);   
+insert into Pelicula values ('ARMG', 'Armageddon', 138 , 'Acción', 3);   
+insert into Pelicula values ('DRAG', 'Cómo entrenar a tu dragón', 150 , 'Animación', 3);   
+insert into Pelicula values ('CONJ', 'El conjuro', 93 , 'Terror', 3);   
+
+insert into Sala values (1, 'Primera');
+insert into Sala values (2, 'Segunda');
+insert into Sala values (3, 'Tercera');
+insert into Sala values (4, 'Cuarta');
+insert into Sala values (5, 'Quinta');
+insert into Sala values (6, 'Sexta');
+insert into Sala values (7, 'Séptima');
+insert into Sala values (8, 'Octava');
+
+insert into Sesion values ('S0001', '2026-02-02', '18:30:00' , '21:50:00', 7, 1, 'AVAT');   
+insert into Sesion values ('S0002', '2026-02-02', '17:00:00', '20:20:00', 9, 3, 'AVAT');  
+insert into Sesion values ('S0003', '2026-02-02', '20:50:00', '00:10:00', 9, 3, 'AVAT');  
+ 
+insert into Sesion values ('S0004', '2026-02-03', '18:30:00' , '21:50:00', 7, 1, 'AVAT');   
+insert into Sesion values ('S0005', '2026-02-03', '17:00:00', '20:20:00', 9, 3, 'AVAT');   
+insert into Sesion values ('S0006', '2026-02-03', '20:50:00', '00:10:00', 9 ,3, 'AVAT'); 
+ 
+insert into Sesion values ('S0007', '2026-02-04', '18:30:00' , '21:50:00', 5, 1, 'AVAT');   
+insert into Sesion values ('S0008', '2026-02-04', '17:00:00', '20:20:00', 7, 3, 'AVAT');  
+insert into Sesion values ('S0009', '2026-02-04', '20:50:00', '00:10:00', 7 ,3, 'AVAT'); 
+ 
+insert into Sesion values ('S0010', '2026-02-05', '18:30:00' , '21:50:00', 7, 1, 'AVAT');   
+insert into Sesion values ('S0011', '2026-02-05', '17:00:00', '20:20:00', 9, 3, 'AVAT');  
+insert into Sesion values ('S0012', '2026-02-05', '20:50:00', '00:10:00', 9 ,3, 'AVAT'); 
+ 
+insert into Sesion values ('S0013', '2026-02-06', '18:30:00' , '21:50:00', 8.50, 1, 'AVAT');  
+insert into Sesion values ('S0014', '2026-02-06', '17:00:00', '20:20:00', 10.50, 3, 'AVAT');	
+insert into Sesion values ('S0015', '2026-02-06', '20:50:00', '00:10:00', 10.50 ,3, 'AVAT');   
+ 
+insert into Sesion values ('S0016', '2026-02-07', '18:30:00' , '21:50:00', 8.50, 1, 'AVAT');   
+insert into Sesion values ('S0017', '2026-02-07', '17:00:00', '20:20:00', 10.50, 3, 'AVAT');  
+insert into Sesion values ('S0018', '2026-02-07', '20:50:00', '00:10:00', 10.50 ,3, 'AVAT'); 
+ 
+insert into Sesion values ('S0019', '2026-02-08', '18:30:00' , '21:50:00', 8.50, 1, 'AVAT');  
+insert into Sesion values ('S0020', '2026-02-08', '17:00:00', '20:20:00', 10.50, 3, 'AVAT');   
+insert into Sesion values ('S0021', '2026-02-08', '20:50:00', '00:10:00', 10.50 ,3, 'AVAT'); 
+
+
+insert into Sesion values ('SA001', '2026-02-02', '19:00:00' , '21:00:00', 7, 2, 'GREY');   
+insert into Sesion values ('SA002', '2026-02-02', '21:30:00', '23:30:00', 7, 2, 'GREY');
+insert into Sesion values ('SA003', '2026-02-02', '20:30:00', '22:30:00', 7, 4, 'GREY'); 
+
+insert into Sesion values ('SA004', '2026-02-03', '19:00:00' , '21:00:00', 7, 2, 'GREY');   
+insert into Sesion values ('SA005', '2026-02-03', '21:30:00', '23:30:00', 7, 2, 'GREY');
+insert into Sesion values ('SA006', '2026-02-03', '20:30:00', '22:30:00', 7, 4, 'GREY'); 
+ 
+insert into Sesion values ('SA007', '2026-02-04', '19:00:00' , '21:00:00', 5, 2, 'GREY');   
+insert into Sesion values ('SA008', '2026-02-04', '21:30:00', '23:30:00', 5, 2, 'GREY'); 
+insert into Sesion values ('SA009', '2026-02-04', '20:30:00', '22:30:00', 5, 4, 'GREY'); 
+ 
+insert into Sesion values ('SA010', '2026-02-05', '19:00:00' , '21:00:00', 7, 2, 'GREY');   
+insert into Sesion values ('SA011', '2026-02-05', '21:30:00', '23:30:00', 7, 2, 'GREY');
+insert into Sesion values ('SA012', '2026-02-05', '20:30:00', '22:30:00', 7, 4, 'GREY'); 
+
+ 
+insert into Sesion values ('SA013', '2026-02-06', '19:00:00' , '21:00:00', 8.50, 2, 'GREY');   
+insert into Sesion values ('SA014', '2026-02-06', '21:30:00', '23:30:00', 8.50, 2, 'GREY');  
+insert into Sesion values ('SA015', '2026-02-06', '20:30:00', '22:30:00', 8.50, 4, 'GREY'); 
+ 
+insert into Sesion values ('SA016', '2026-02-07', '19:00:00' , '21:00:00', 8.50, 2, 'GREY');   
+insert into Sesion values ('SA017', '2026-02-07', '21:30:00', '23:30:00', 8.50, 2, 'GREY');  
+insert into Sesion values ('SA018', '2026-02-07', '20:30:00', '22:30:00', 8.50, 4, 'GREY'); 
+ 
+insert into Sesion values ('SA019', '2026-02-08', '19:00:00' , '21:00:00', 8.50, 2, 'GREY');   
+insert into Sesion values ('SA020', '2026-02-08', '21:30:00', '23:30:00', 8.50, 2, 'GREY');  
+insert into Sesion values ('SA021', '2026-02-08', '20:30:00', '22:30:00', 8.50, 4, 'GREY'); 
+ 
+insert into Sesion values ('SB001', '2026-02-02', '18:30:00' , '20:50:00', 7, 5, 'MTRX');   
+insert into Sesion values ('SB002', '2026-02-02', '17:40:00', '20:00:00', 9, 6, 'MTRX'); 
+insert into Sesion values ('SB003', '2026-02-02', '20:30:00', '22:50:00', 9, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB004', '2026-02-03', '18:30:00' , '20:50:00', 7, 5, 'MTRX');   
+insert into Sesion values ('SB005', '2026-02-03', '17:40:00', '20:00:00', 9, 6, 'MTRX'); 
+insert into Sesion values ('SB006', '2026-02-03', '20:30:00', '22:50:00', 9, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB007', '2026-02-04', '18:30:00' , '20:50:00', 5, 5, 'MTRX');   
+insert into Sesion values ('SB008', '2026-02-04', '17:40:00', '20:00:00', 7, 6, 'MTRX'); 
+insert into Sesion values ('SB009', '2026-02-04', '20:30:00', '22:50:00', 7, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB010', '2026-02-05', '18:30:00' , '20:50:00', 7, 5, 'MTRX');   
+insert into Sesion values ('SB011', '2026-02-05', '17:40:00', '20:00:00', 9, 6, 'MTRX'); 
+insert into Sesion values ('SB012', '2026-02-05', '20:30:00', '22:50:00', 9, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB013', '2026-02-06', '18:30:00' , '20:50:00', 8.50, 5, 'MTRX');   
+insert into Sesion values ('SB014', '2026-02-06', '17:40:00', '20:00:00', 10.50, 6, 'MTRX'); 
+insert into Sesion values ('SB015', '2026-02-06', '20:30:00', '22:50:00', 10.50, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB016', '2026-02-07', '18:30:00' , '20:50:00', 8.50, 5, 'MTRX');   
+insert into Sesion values ('SB017', '2026-02-07', '17:40:00', '20:00:00', 10.50, 6, 'MTRX'); 
+insert into Sesion values ('SB018', '2026-02-07', '20:30:00', '22:50:00', 10.50, 6, 'MTRX');  
+ 
+insert into Sesion values ('SB019', '2026-02-08', '18:30:00' , '20:50:00', 8.50, 5, 'MTRX');   
+insert into Sesion values ('SB020', '2026-02-08', '17:40:00', '20:00:00', 10.50, 6, 'MTRX'); 
+insert into Sesion values ('SB021', '2026-02-08', '20:30:00', '22:50:00', 10.50, 6, 'MTRX');  
+ 
+insert into Sesion values ('SC001', '2026-02-02', '17:30:00' , '20:00:00', 7, 4, 'ARMG');  
+insert into Sesion values ('SC002', '2026-02-02', '21:20:00', '23:50:00', 7, 5, 'ARMG');
+insert into Sesion values ('SC003', '2026-02-02', '19:00:00', '21:30:00', 7, 7, 'ARMG'); 
+ 
+insert into Sesion values ('SC004', '2026-02-03', '17:30:00' , '20:00:00', 7, 4, 'ARMG');   
+insert into Sesion values ('SC005', '2026-02-03', '21:20:00', '23:50:00', 7, 5, 'ARMG');
+insert into Sesion values ('SC006', '2026-02-03', '19:00:00', '21:30:00', 7, 7, 'ARMG'); 
+ 
+insert into Sesion values ('SC007', '2026-02-04', '17:30:00' , '20:00:00', 5, 4, 'ARMG');   
+insert into Sesion values ('SC008', '2026-02-04', '21:20:00', '23:50:00', 5, 5, 'ARMG'); 
+insert into Sesion values ('SC009', '2026-02-04', '19:00:00', '21:30:00', 5, 7, 'ARMG'); 
+ 
+insert into Sesion values ('SC010', '2026-02-05', '17:30:00' , '20:00:00', 7, 4, 'ARMG');   
+insert into Sesion values ('SC011', '2026-02-05', '21:20:00', '23:50:00', 7, 5, 'ARMG');
+insert into Sesion values ('SC012', '2026-02-05', '19:00:00', '21:30:00', 7, 7, 'ARMG'); 
+ 
+insert into Sesion values ('SC013', '2026-02-06', '17:30:00' , '20:00:00', 8.50, 4, 'ARMG');   
+insert into Sesion values ('SC014', '2026-02-06', '21:20:00', '23:50:00', 8.50, 5, 'ARMG');  
+insert into Sesion values ('SC015', '2026-02-06', '19:00:00', '21:30:00', 8.50, 7, 'ARMG'); 
+
+insert into Sesion values ('SC016', '2026-02-07', '17:30:00' , '20:00:00', 8.50, 4, 'ARMG');  
+insert into Sesion values ('SC017', '2026-02-07', '21:20:00', '23:50:00', 8.50, 5, 'ARMG');  
+insert into Sesion values ('SC018', '2026-02-07', '19:00:00', '21:30:00', 8.50, 7, 'ARMG'); 
+
+ 
+insert into Sesion values ('SC019', '2026-02-08', '17:30:00' , '20:00:00', 8.50, 4, 'ARMG');   
+insert into Sesion values ('SC020', '2026-02-08', '21:20:00', '23:50:00', 8.50, 5, 'ARMG');  
+insert into Sesion values ('SC021', '2026-02-08', '19:00:00', '21:30:00', 8.50, 7, 'ARMG'); 
+ 
+insert into Sesion values ('SD001', '2026-02-02', '16:00:00' , '18:05:00', 7.50, 8, 'DRAG');
+insert into Sesion values ('SD002', '2026-02-02', '18:35:00', '20:40:00', 7.50, 8, 'DRAG'); 
+insert into Sesion values ('SD003', '2026-02-02', '21:10:00', '23:15:00', 7.50, 8, 'DRAG');  
+ 
+insert into Sesion values ('SD004', '2026-02-03', '16:00:00' , '18:05:00', 7.50, 8, 'DRAG');
+insert into Sesion values ('SD005', '2026-02-03', '18:35:00', '20:40:00', 7.50, 8, 'DRAG'); 
+insert into Sesion values ('SD006', '2026-02-03', '21:10:00', '23:15:00', 7.50, 8, 'DRAG');  
+ 
+insert into Sesion values ('SD007', '2026-02-04', '16:00:00' , '18:05:00', 5.50, 8, 'DRAG');
+insert into Sesion values ('SD008', '2026-02-04', '18:35:00', '20:40:00', 5.50, 8, 'DRAG'); 
+insert into Sesion values ('SD009', '2026-02-04', '21:10:00', '23:15:00', 5.50, 8, 'DRAG');  
+ 
+insert into Sesion values ('SD010', '2026-02-05', '16:00:00' , '18:05:00', 7.50, 8, 'DRAG');
+insert into Sesion values ('SD011', '2026-02-05', '18:35:00', '20:40:00', 7.50, 8, 'DRAG'); 
+insert into Sesion values ('SD012', '2026-02-05', '21:10:00', '23:15:00', 7.50, 8, 'DRAG');  
+ 
+insert into Sesion values ('SD013', '2026-02-06', '16:00:00' , '18:05:00', 8.50, 8, 'DRAG');
+insert into Sesion values ('SD014', '2026-02-06', '18:35:00', '20:40:00', 8.50, 8, 'DRAG'); 
+insert into Sesion values ('SD015', '2026-02-06', '21:10:00', '23:15:00', 8.50, 8, 'DRAG'); 
+ 
+insert into Sesion values ('SD016', '2026-02-07', '16:00:00' , '18:05:00', 8.50, 8, 'DRAG');
+insert into Sesion values ('SD017', '2026-02-07', '18:35:00', '20:40:00', 8.50, 8, 'DRAG'); 
+insert into Sesion values ('SD018', '2026-02-07', '21:10:00', '23:15:00', 8.50, 8, 'DRAG');  
+ 
+insert into Sesion values ('SD019', '2026-02-08', '16:00:00' , '18:05:00', 8.50, 8, 'DRAG');
+insert into Sesion values ('SD020', '2026-02-08', '18:35:00', '20:40:00', 8.50, 8, 'DRAG'); 
+insert into Sesion values ('SD021', '2026-02-08', '21:10:00', '23:15:00', 8.50, 8, 'DRAG'); 
+ 
+insert into Sesion values ('SE001', '2026-02-02', '16:35:00' , '18:30:00', 7, 7, 'CONJ');   
+insert into Sesion values ('SE002', '2026-02-02', '22:20:00', '00:15:00', 7, 1, 'CONJ');
+ 
+insert into Sesion values ('SE003', '2026-02-03', '16:35:00' , '18:30:00', 7, 7, 'CONJ');   
+insert into Sesion values ('SE004', '2026-02-03', '22:20:00', '00:15:00', 7, 1, 'CONJ');
+ 
+insert into Sesion values ('SE005', '2026-02-04', '16:35:00' , '18:30:00', 5, 7, 'CONJ');   
+insert into Sesion values ('SE006', '2026-02-04', '22:20:00', '00:15:00', 5, 1, 'CONJ'); 
+ 
+insert into Sesion values ('SE007', '2026-02-05', '16:35:00' , '18:30:00', 7, 7, 'CONJ');   
+insert into Sesion values ('SE008', '2026-02-05', '22:20:00', '00:15:00', 7, 1, 'CONJ');
+ 
+insert into Sesion values ('SE009', '2026-02-06', '16:35:00' , '18:30:00', 8.50, 7, 'CONJ');   
+insert into Sesion values ('SE010', '2026-02-06', '22:20:00', '00:15:00', 8.50, 1, 'CONJ');
+ 
+insert into Sesion values ('SE011', '2026-02-07', '16:35:00' , '18:30:00', 8.50, 7, 'CONJ');   
+insert into Sesion values ('SE012', '2026-02-07', '22:20:00', '00:15:00', 8.50, 1, 'CONJ');
+ 
+insert into Sesion values ('SE013', '2026-02-08', '16:35:00' , '18:30:00', 8.50, 7, 'CONJ');   
+insert into Sesion values ('SE014', '2026-02-08', '22:20:00', '00:15:00', 8.50, 1, 'CONJ');
+
+
+insert into Cliente values ('Invitado1', 'Usuario', 'Invitado', 'contacto@cineprisma.com', aes_encrypt('prisma', 'elorrieta'));
+insert into Cliente values ('12345678A', 'Juan', 'Pérez', 'juan.perez@gmail.com', aes_encrypt('juan123', 'elorrieta'));
+insert into Cliente values ('23456789B', 'María', 'Gómez', 'maria.gomez@gmail.com', aes_encrypt('maria123', 'elorrieta'));
+insert into Cliente values ('34567890C', 'Carlos', 'López', 'carlos.lopez@gmail.com', aes_encrypt('carlos123', 'elorrieta'));
+insert into Cliente values ('45678901D', 'Laura', 'Martínez', 'laura.martinez@gmail.com', aes_encrypt('laura123', 'elorrieta'));
+insert into Cliente values ('56789012E', 'Pedro', 'García', 'pedro.garcia@gmail.com', aes_encrypt('pedro123', 'elorrieta'));
+insert into Cliente values ('67890123F', 'Ana', 'Ramírez', 'ana.ramirez@gmail.com', aes_encrypt('ana123', 'elorrieta'));
+insert into Cliente values ('78901234G', 'Luis', 'Fernández', 'luis.fernandez@gmail.com', aes_encrypt('luis123', 'elorrieta'));
+insert into Cliente values ('89012345H', 'Sofía', 'Torres', 'sofia.torres@gmail.com', aes_encrypt('sofia123', 'elorrieta'));
+insert into Cliente values ('90123456J', 'Miguel', 'Ruiz', 'miguel.ruiz@gmail.com', aes_encrypt('miguel123', 'elorrieta'));
+insert into Cliente values ('01234567K', 'Elena', 'Díaz', 'elena.diaz@gmail.com', aes_encrypt('elena123', 'elorrieta'));
+insert into Cliente values ('11223344L', 'Javier', 'Moreno', 'javier.moreno@gmail.com', aes_encrypt('javier123', 'elorrieta'));
+insert into Cliente values ('22334455M', 'Paula', 'Muñoz', 'paula.munoz@gmail.com', aes_encrypt('paula123', 'elorrieta'));
+insert into Cliente values ('33445566N', 'Diego', 'Álvarez', 'diego.alvarez@gmail.com', aes_encrypt('diego123', 'elorrieta'));
+insert into Cliente values ('44556677P', 'Carmen', 'Romero', 'carmen.romero@gmail.com', aes_encrypt('carmen', 'elorrieta'));
+insert into Cliente values ('55667788Q', 'Alberto', 'Navarro', 'alberto.navarro@gmail.com', aes_encrypt('alberto123', 'elorrieta'));
+insert into Cliente values ('66778899R', 'Lucía', 'Molina', 'lucia.molina@gmail.com', aes_encrypt('lucia123', 'elorrieta'));
+insert into Cliente values ('77889900S', 'Raúl', 'Ortega', 'raul.ortega@gmail.com', aes_encrypt('raul123', 'elorrieta'));
+insert into Cliente values ('88990011T', 'Natalia', 'Delgado', 'natalia.delgado@gmail.com', aes_encrypt('natalia123', 'elorrieta'));
+insert into Cliente values ('99001122V', 'Iván', 'Castro', 'ivan.castro@gmail.com', aes_encrypt('ivan123', 'elorrieta'));
+insert into Cliente values ('10111213W', 'Beatriz', 'Vega', 'beatriz.vega@gmail.com', aes_encrypt('beatriz123', 'elorrieta'));
+insert into Cliente values ('12131415X', 'Andrés', 'Santos', 'andres.santos@gmail.com', aes_encrypt('andres123', 'elorrieta'));
+insert into Cliente values ('13141516Y', 'Patricia', 'Ibáñez', 'patricia.ibanez@gmail.com', aes_encrypt('patricia123', 'elorrieta'));
+insert into Cliente values ('14151617Z', 'Sergio', 'Cruz', 'sergio.cruz@gmail.com', aes_encrypt('sergio123', 'elorrieta'));
+insert into Cliente values ('15161718A', 'Marta', 'Herrera', 'marta.herrera@gmail.com', aes_encrypt('marta123', 'elorrieta'));
+insert into Cliente values ('16171819B', 'Adrián', 'Flores', 'adrian.flores@gmail.com', aes_encrypt('adrian123', 'elorrieta'));
+insert into Cliente values ('17181920C', 'Irene', 'Prieto', 'irene.prieto@gmail.com', aes_encrypt('irene123', 'elorrieta'));
+insert into Cliente values ('18192021D', 'Rubén', 'León', 'ruben.leon@gmail.com', aes_encrypt('ruben123', 'elorrieta'));
+insert into Cliente values ('19202122E', 'Silvia', 'Méndez', 'silvia.mendez@gmail.com', aes_encrypt('silvia123', 'elorrieta'));
+insert into Cliente values ('20212223F', 'Óscar', 'Peña', 'oscar.pena@gmail.com', aes_encrypt('oscar123', 'elorrieta'));
+insert into Cliente values ('21222324G', 'Noelia', 'Campos', 'noelia.campos@gmail.com', aes_encrypt('noelia123', 'elorrieta'));
+insert into Cliente values ('22232425H', 'Héctor', 'Gil', 'hector.gil@gmail.com', aes_encrypt('hector123', 'elorrieta'));
+insert into Cliente values ('23242526J', 'Rocío', 'Serrano', 'rocio.serrano@gmail.com', aes_encrypt('rocio123', 'elorrieta'));
+insert into Cliente values ('24252627K', 'Pablo', 'Reyes', 'pablo.reyes@gmail.com', aes_encrypt('pablo123', 'elorrieta'));
+insert into Cliente values ('25262728L', 'Clara', 'Núñez', 'clara.nunez@gmail.com', aes_encrypt('clara123', 'elorrieta'));
+insert into Cliente values ('26272829M', 'Marcos', 'Vidal', 'marcos.vidal@gmail.com', aes_encrypt('marcos123', 'elorrieta'));
+insert into Cliente values ('27282930N', 'Daniel', 'Aguirre', 'daniel.aguirre@gmail.com', aes_encrypt('daniel123', 'elorrieta'));
+insert into Cliente values ('28293031P', 'Alicia', 'Pascual', 'alicia.pascual@gmail.com', aes_encrypt('alicia123', 'elorrieta'));
+insert into Cliente values ('29303132Q', 'Víctor', 'Benítez', 'victor.benitez@gmail.com', aes_encrypt('victor123', 'elorrieta'));
+insert into Cliente values ('30313233R', 'Cristina', 'Marín', 'cristina.marin@gmail.com', aes_encrypt('cristina123', 'elorrieta'));
+insert into Cliente values ('31323334S', 'Jorge', 'Calvo', 'jorge.calvo@gmail.com', aes_encrypt('jorge123', 'elorrieta'));
+insert into Cliente values ('32333435T', 'Lorena', 'Rojas', 'lorena.rojas@gmail.com', aes_encrypt('lorena123', 'elorrieta'));
+insert into Cliente values ('33343536V', 'Fernando', 'Suárez', 'fernando.suarez@gmail.com', aes_encrypt('fernando123', 'elorrieta'));
+insert into Cliente values ('34353637W', 'Eva', 'Cabrera', 'eva.cabrera@gmail.com', aes_encrypt('eva123', 'elorrieta'));
+insert into Cliente values ('35363738X', 'Nacho', 'Pardo', 'nacho.pardo@gmail.com', aes_encrypt('nacho123', 'elorrieta'));
+insert into Cliente values ('36373839Y', 'Raquel', 'Esteban', 'raquel.esteban@gmail.com', aes_encrypt('raquel123', 'elorrieta'));
+insert into Cliente values ('37383940Z', 'Álvaro', 'Lorenzo', 'alvaro.lorenzo@gmail.com', aes_encrypt('alvaro123', 'elorrieta'));
+insert into Cliente values ('38394041A', 'Monica', 'Hidalgo', 'monica.hidalgo@gmail.com', aes_encrypt('monica123', 'elorrieta'));
+insert into Cliente values ('39404142B', 'Guillermo', 'Cano', 'guillermo.cano@gmail.com', aes_encrypt('guillermo123', 'elorrieta'));
+insert into Cliente values ('40414243C', 'Sandra', 'Iglesias', 'sandra.iglesias@gmail.com', aes_encrypt('sandra123', 'elorrieta'));
+insert into Cliente values ('41424344D', 'Iván', 'Fuentes', 'ivan.fuentes@gmail.com', aes_encrypt('ivan123', 'elorrieta'));
+insert into Cliente values ('42434445E', 'Nerea', 'Domínguez', 'nerea.dominguez@gmail.com', aes_encrypt('nerea123', 'elorrieta'));
+insert into Cliente values ('43444546F', 'Samuel', 'Blanco', 'samuel.blanco@gmail.com', aes_encrypt('samuel123', 'elorrieta'));
+insert into Cliente values ('44454647G', 'Teresa', 'Rubio', 'teresa.rubio@gmail.com', aes_encrypt('teresa123', 'elorrieta'));
+insert into Cliente values ('45464748H', 'Hugo', 'Sáez', 'hugo.saez@gmail.com', aes_encrypt('hugo123', 'elorrieta'));
+insert into Cliente values ('46474849J', 'Lidia', 'Carrasco', 'lidia.carrasco@gmail.com', aes_encrypt('lidia123', 'elorrieta'));
+insert into Cliente values ('47484950K', 'Mario', 'Sánchez', 'mario.sanchez@gmail.com', aes_encrypt('mario123', 'elorrieta'));
+insert into Cliente values ('48495051L', 'Andrea', 'Lara', 'andrea.lara@gmail.com', aes_encrypt('andrea123', 'elorrieta'));
+insert into Cliente values ('49505152M', 'David', 'Herrero', 'david.herrero@gmail.com', aes_encrypt('david123', 'elorrieta'));
+insert into Cliente values ('50515253N', 'Claudia', 'Nieto', 'claudia.nieto@gmail.com', aes_encrypt('claudia123', 'elorrieta'));
+insert into Cliente values ('51525354P', 'Ángel', 'Ramos', 'angel.ramos@gmail.com', aes_encrypt('angel123', 'elorrieta'));
+insert into Cliente values ('52535455Q', 'Isabel', 'Cortés', 'isabel.cortes@gmail.com', aes_encrypt('isabel123', 'elorrieta'));
+insert into Cliente values ('53545556R', 'Rubén', 'Marcos', 'ruben.marcos@gmail.com', aes_encrypt('ruben123', 'elorrieta'));
+insert into Cliente values ('54555657S', 'Natalia', 'Pineda', 'natalia.pineda@gmail.com', aes_encrypt('natalia123', 'elorrieta'));
+insert into Cliente values ('55565758T', 'Sergio', 'Blázquez', 'sergio.blazquez@gmail.com', aes_encrypt('sergio123', 'elorrieta'));
+insert into Cliente values ('56575859V', 'Paola', 'Rivas', 'paola.rivas@gmail.com', aes_encrypt('paola123', 'elorrieta'));
+insert into Cliente values ('57585960W', 'Iván', 'Salas', 'ivan.salas@gmail.com', aes_encrypt('ivan123', 'elorrieta'));
+insert into Cliente values ('58596061X', 'Lucía', 'Carrillo', 'lucia.carrillo@gmail.com', aes_encrypt('lucia123', 'elorrieta'));
+insert into Cliente values ('59606162Y', 'Tomás', 'Moya', 'tomas.moya@gmail.com', aes_encrypt('tomas123', 'elorrieta'));
+insert into Cliente values ('60616263Z', 'Noemí', 'Soler', 'noemi.soler@gmail.com', aes_encrypt('noemi123', 'elorrieta'));
+insert into Cliente values ('61626364A', 'Joaquín', 'Padilla', 'joaquin.padilla@gmail.com', aes_encrypt('joaquin123', 'elorrieta'));
+insert into Cliente values ('62636465B', 'Miriam', 'Arias', 'miriam.arias@gmail.com', aes_encrypt('miriam123', 'elorrieta'));
+insert into Cliente values ('63646566C', 'Óliver', 'Vázquez', 'oliver.vazquez@gmail.com', aes_encrypt('oliver123', 'elorrieta'));
+insert into Cliente values ('64656667D', 'Sara', 'Redondo', 'sara.redondo@gmail.com', aes_encrypt('sara123', 'elorrieta'));
+insert into Cliente values ('65666768E', 'Héctor', 'Bernal', 'hector.bernal@gmail.com', aes_encrypt('hector123', 'elorrieta'));
+insert into Cliente values ('66676869F', 'Ainhoa', 'Campos', 'ainhoa.campos@gmail.com', aes_encrypt('ainhoa123', 'elorrieta'));
+insert into Cliente values ('77788899A', 'Daniela', 'Morales', 'daniela.morales@gmail.com', aes_encrypt('daniela123', 'elorrieta'));
+insert into Cliente values ('88899900B', 'Alejandro', 'Vázquez', 'alejandro.vazquez@gmail.com', aes_encrypt('alejandro123', 'elorrieta'));
+insert into Cliente values ('99900011C', 'Bea', 'Salcedo', 'bea.salcedo@gmail.com', aes_encrypt('bea123', 'elorrieta'));
+insert into Cliente values ('11122233D', 'Óscar', 'Montoya', 'oscar.montoya@gmail.com', aes_encrypt('oscar123', 'elorrieta'));
+insert into Cliente values ('22233344E', 'Inés', 'Peñalver', 'ines.penalver@gmail.com', aes_encrypt('ines123', 'elorrieta'));
+insert into Cliente values ('33344455F', 'Raúl', 'Vicente', 'raul.vicente@gmail.com', aes_encrypt('raul123', 'elorrieta'));
+insert into Cliente values ('44455566G', 'Claudia', 'Herranz', 'claudia.herranz@gmail.com', aes_encrypt('claudia123', 'elorrieta'));
+insert into Cliente values ('55566677H', 'Sergio', 'Beltrán', 'sergio.beltran@gmail.com', aes_encrypt('sergio123', 'elorrieta'));
+insert into Cliente values ('66677788J', 'Paula', 'Mora', 'paula.mora@gmail.com', aes_encrypt('paula123', 'elorrieta'));
+insert into Cliente values ('88811122K', 'Javier', 'Cuevas', 'javier.cuevas@gmail.com', aes_encrypt('javier123', 'elorrieta'));
+
+
+insert into Compra values
+(1,'2026-01-26','21:50:00',28.00,5.60,'01234567K'),
+(2,'2026-01-30','13:00:00',35.00,NULL,'10111213W'),
+(3,'2026-01-31','15:30:15',72.00,21.60,'11223344L'),
+(4,'2026-02-02','12:39:06',45.50,NULL,'12131415X'),
+(5,'2026-02-02','11:48:55',47.00,9.40,'12345678A'),
+(6,'2026-01-31','09:33:22',91.00,27.30,'13141516Y'),
+(7,'2026-02-07','17:05:44',52.50,NULL,'14151617Z'),
+(8,'2026-02-01','00:35:07',35.00,10.50,'15161718A'),
+(9,'2026-02-08','21:30:00',58.00,11.60,'16171819B'),
+(10,'2026-01-30','15:55:59',8.50,NULL,'17181920C'),
+(11,'2026-02-05','23:00:15',10.50,NULL,'18192021D'),
+(12,'2026-02-01','18:52:18',36.50,7.30,'19202122E'),
+(13,'2026-02-07','18:20:45',63.00,NULL,'20212223F'),
+(14,'2026-02-06','21:32:11',17.00,NULL,'21222324G'),
+(15,'2026-01-23','10:44:22',66.50,19.95,'22232425H'),
+(16,'2026-02-01','20:05:36',38.00,7.60,'22334455M'),
+(17,'2026-02-06','22:11:15',31.50,NULL,'23242526J'),
+(18,'2026-02-01','21:32:18',112.00,33.60,'23456789B'),
+(19,'2026-02-05','16:18:46',25.50,NULL,'24252627K'),
+(20,'2026-01-31','23:00:08',37.00,7.40,'25262728L'),
+(21,'2026-02-05','18:30:04',80.00,24.00,'26272829M'),
+(22,'2026-02-06','18:16:14',52.50,NULL,'27282930N'),
+(23,'2026-02-07','17:30:55',17.00,NULL,'28293031P'),
+(24,'2026-02-07','17:31:28',8.50,NULL,'29303132Q'),
+(25,'2026-02-01','19:37:39',98.00,29.40,'30313233R'),
+(26,'2026-01-28','12:19:02',46.50,9.30,'31323334S'),
+(27,'2026-01-31','18:06:22',40.50,12.15,'32333435T'),
+(28,'2026-02-06','19:33:44',25.50,NULL,'33343536V'),
+(29,'2026-02-01','20:15:56',45.00,NULL,'33445566N'),
+(30,'2026-01-29','22:17:19',73.50,22.05,'34353637W'),
+(31,'2026-01-28','21:48:00',46.00,9.20,'34567890C'),
+(32,'2026-02-01','23:23:22',16.00,3.20,'35363738X'),
+(33,'2026-02-02','14:35:43',32.50,NULL,'36373839Y'),
+(34,'2026-01-31','14:27:03',17.50,NULL,'99001122V'),
+(35,'2026-02-02','21:14:49',41.50,8.30,'90123456J'),
+(36,'2026-02-05','09:47:12',34.00,NULL,'89012345H'),
+(37,'2026-02-01','22:36:52',63.50,19.05,'88990011T'),
+(38,'2026-02-04','18:11:56',42.50,NULL,'78901234G'),
+(39,'2026-02-07','20:45:37',17.00,NULL,'77889900S'),
+(40,'2026-02-06','14:52:27',57.00,11.40,'67890123F'),
+(41,'2026-02-03','10:35:22',28.00,NULL,'66778899R'),
+(42,'2026-02-01','19:57:03',9.00,NULL,'56789012E'),
+(43,'2026-02-04','15:09:47',48.50,9.70,'55667788Q'),
+(44,'2026-01-31','22:03:29',14.00,NULL,'46474849J'),
+(45,'2026-02-02','08:51:06',20.00,4.00,'45678901D'),
+(46,'2026-02-03','20:54:21',16.50,NULL,'45464748H'),
+(47,'2026-02-01','16:36:07',7.00,NULL,'44556677P'),
+(48,'2026-02-02','23:47:51',7.00,NULL,'44454647G'),
+(49,'2026-01-31','12:19:54',38.00,7.60,'43444546F'),
+(50,'2026-02-06','19:21:56',25.50,NULL,'42434445E'),
+(51,'2026-02-04','21:11:43',36.00,NULL,'41424344D'),
+(52,'2026-02-04','10:37:42',34.00,6.80,'40414243C'),
+(53,'2026-02-03','19:07:41',7.00,NULL,'39404142B'),
+(54,'2026-02-02','21:18:39',63.50,19.05,'38394041A'),
+(55,'2026-02-03','16:50:42',46.50,9.30,'37383940Z'),
+(56,'2026-01-31','13:51:02',14.50,2.90,'47484950K'),
+(57,'2026-02-03','17:18:53',43.50,8.70,'48495051L'),
+(58,'2026-02-01','20:17:49',61.00,18.30,'49505152M'),
+(59,'2026-02-04','09:38:55',19.50,3.90,'50515253N'),
+(60,'2026-02-01','14:21:54',35.00,NULL,'51525354P'),
+(61,'2026-02-01','07:40:51',36.00,7.20,'52535455Q'),
+(62,'2026-02-06','22:19:41',8.50,NULL,'53545556R'),
+(63,'2026-02-03','20:53:50',15.00,NULL,'54555657S'),
+(64,'2026-02-02','23:19:36',53.00,10.60,'55565758T'),
+(65,'2026-02-03','17:29:51',28.00,NULL,'77788899A'),
+(66,'2026-02-04','10:55:38',15.00,NULL,'88899900B'),
+(67,'2026-02-02','20:38:06',17.50,3.50,'99900011C'),
+(68,'2026-02-03','18:46:09',14.00,NULL,'11122233D'),
+(69,'2026-02-05','23:19:41',52.50,NULL,'22233344E'),
+(70,'2026-02-01','12:53:26',24.00,4.80,'33344455F'),
+(71,'2026-02-05','15:18:06',25.50,NULL,'44455566G'),
+(72,'2026-01-31','13:05:38',38.50,11.55,'55566677H'),
+(73,'2026-02-02','18:59:43',14.00,NULL,'66677788J'),
+(74,'2026-02-04','14:02:18',17.50,3.50,'88811122K'),
+(75,'2026-02-07','21:22:49',21.00,NULL,'56575859V'),
+(76,'2026-02-05','15:07:53',25.50,NULL,'57585960W'),
+(77,'2026-02-02','19:53:21',45.00,13.50,'58596061X'),
+(78,'2026-02-05','21:27:05',8.50,NULL,'59606162Y'),
+(79,'2026-02-04','22:00:43',31.50,NULL,'60616263Z'),
+(80,'2026-02-05','11:58:28',34.00,NULL,'61626364A'),
+(81,'2026-02-03','23:49:20',34.00,6.80,'62636465B'),
+(82,'2026-02-05','12:47:29',31.50,NULL,'63646566C'),
+(83,'2026-01-31','20:43:06',32.00,6.40,'64656667D'),
+(84,'2026-02-01','11:46:21',16.50,3.30,'65666768E'),
+(85,'2026-01-31','21:00:32',36.00,7.20,'66676869F');
+
+
+insert into Entrada values
+(1,14.00,2.80,2,1,'S0001'),
+(2,14.00,2.80,2,1,'SA001'),
+(3,35.00,NULL,5,2,'SA001'),
+(4,27.00,8.10,3,3,'S0003'),
+(5,28.00,8.40,4,3,'SB009'),
+(6,17.00,5.10,2,3,'SE014'),
+(7,14.00,NULL,2,4,'S0008'),
+(8,31.50,NULL,3,4,'S0018'),
+(9,30.00,6.00,4,5,'SD010'),
+(10,17.00,3.40,2,5,'SC021'),
+(11,7.00,2.10,1,6,'SE001'),
+(12,34.00,10.20,4,6,'SD014'),
+(13,36.00,10.80,4,6,'S0011'),
+(14,14.00,4.20,2,6,'SC006'),
+(15,52.50,NULL,5,7,'SB018'),
+(16,18.00,5.40,2,8,'S0003'),
+(17,7.00,2.10,1,8,'SA004'),
+(18,10.00,3.00,2,8,'SB007'),
+(19,28.00,5.60,4,9,'SC001'),
+(20,30.00,6.00,4,9,'SD011'),
+(21,8.50,NULL,1,10,'SA015'),
+(22,10.50,NULL,1,11,'SB014'),
+(23,22.50,4.50,3,12,'SD005'),
+(24,14.00,2.80,2,12,'S0009'),
+(25,42.00,NULL,4,13,'S0018'),
+(26,21.00,NULL,2,13,'S0020'),
+(27,17.00,NULL,2,14,'SA015'),
+(28,42.00,12.60,4,15,'S0018'),
+(29,7.50,2.25,1,15,'SD006'),
+(30,7.00,2.10,1,15,'SE008'),
+(31,10.00,3.00,2,15,'SC009'),
+(32,17.00,3.40,2,16,'SB013'),
+(33,21.00,4.20,2,16,'S0018'),
+(34,31.50,NULL,3,17,'SB018'),
+(35,42.00,12.60,4,18,'S0015'),
+(36,36.00,10.80,4,18,'SB012'),
+(37,34.00,10.20,4,18,'SE012'),
+(38,25.50,NULL,3,19,'SD015'),
+(39,22.00,4.40,4,20,'SD008'),
+(40,15.00,3.00,3,20,'SC007'),
+(41,17.00,5.10,2,21,'SA019'),
+(42,42.00,12.60,4,21,'S0018'),
+(43,21.00,6.30,2,21,'SB014'),
+(44,52.50,NULL,5,22,'SB018'),
+(45,17.00,NULL,2,23,'SC018'),
+(46,8.50,NULL,1,24,'SC017'),
+(47,28.00,8.40,4,25,'S0009'),
+(48,36.00,10.80,4,25,'SB012'),
+(49,17.00,5.10,2,25,'SC015'),
+(50,17.00,5.10,2,25,'SE012'),
+(51,21.00,4.20,2,26,'S0015'),
+(52,25.50,5.10,3,26,'SA021'),
+(53,18.00,5.40,2,27,'S0006'),
+(54,14.00,4.20,2,27,'SC001'),
+(55,8.50,2.55,1,27,'SE010'),
+(56,25.50,NULL,3,28,'SD020'),
+(57,11.00,NULL,2,29,'SD008'),
+(58,34.00,NULL,4,29,'SD015'),
+(59,42.50,12.75,5,30,'SB013'),
+(60,14.00,4.20,2,30,'S0008'),
+(61,17.00,5.10,2,30,'SD019'),
+(62,10.00,2.00,2,31,'SE006'),
+(63,25.50,5.10,3,31,'SE011'),
+(64,10.50,2.10,1,31,'SB020'),
+(65,7.00,1.40,1,32,'SC010'),
+(66,9.00,1.80,1,32,'SB002'),
+(67,7.00,NULL,1,33,'SA006'),
+(68,25.50,NULL,3,33,'SA015'),
+(69,9.00,NULL,1,34,'SB006'),
+(70,8.50,NULL,1,34,'SE010'),
+(71,31.50,6.30,3,35,'S0015'),
+(72,10.00,2.00,2,35,'SC007'),
+(73,34.00,NULL,4,36,'SD019'),
+(74,17.00,5.10,2,37,'SA016'),
+(75,31.50,9.45,3,37,'S0021'),
+(76,15.00,4.50,3,37,'SE006'),
+(77,42.50,NULL,5,38,'SE011'),
+(78,17.00,NULL,2,39,'SC021'),
+(79,25.50,5.10,3,40,'SC017'),
+(80,31.50,6.30,3,40,'SB017'),
+(81,28.00,NULL,4,41,'SA004'),
+(82,9.00,NULL,1,42,'SB005'),
+(83,31.50,6.30,3,43,'S0014'),
+(84,17.00,3.40,2,43,'SC021'),
+(85,14.00,NULL,2,44,'SB008'),
+(86,10.00,2.00,2,45,'SA007'),
+(87,10.00,2.00,2,45,'SC008'),
+(88,16.50,NULL,3,46,'SD008'),
+(89,7.00,NULL,1,47,'SB004'),
+(90,7.00,NULL,1,48,'SA012'),
+(91,28.00,5.60,4,49,'S0001'),
+(92,10.00,2.00,2,49,'SB007'),
+(93,25.50,NULL,3,50,'SA017'),
+(94,36.00,NULL,4,51,'S0012'),
+(95,17.00,3.40,2,52,'SC017'),
+(96,17.00,3.40,2,52,'SD015'),
+(97,7.00,NULL,1,53,'SE008'),
+(98,25.50,7.65,3,54,'SE012'),
+(99,17.00,5.10,2,54,'SC021'),
+(100,21.00,6.30,3,54,'SB009'),
+(101,21.00,4.20,2,55,'S0017'),
+(102,25.50,5.10,3,55,'SE009'),
+(103,7.00,1.40,1,56,'SB001'),
+(104,7.50,1.50,1,56,'SD003'),
+(105,22.50,4.50,3,57,'SD010'),
+(106,21.00,4.20,3,57,'SA010'),
+(107,10.00,3.00,2,58,'SE006'),
+(108,25.50,7.65,3,58,'SD019'),
+(109,25.50,7.65,3,58,'SC021'),
+(110,10.50,2.10,1,59,'S0017'),
+(111,9.00,1.80,1,59,'SB011'),
+(112,35.00,NULL,5,60,'SC004'),
+(113,15.00,3.00,2,61,'SD003'),
+(114,21.00,4.20,3,61,'SE004'),
+(115,8.50,NULL,1,62,'SE014'),
+(116,15.00,NULL,3,63,'SA009'),
+(117,17.00,3.40,2,64,'SA015'),
+(118,36.00,7.20,4,64,'SB012'),
+(119,28.00,NULL,4,65,'SC010'),
+(120,15.00,NULL,2,66,'SD011'),
+(121,7.00,1.40,1,67,'SE004'),
+(122,10.50,2.10,1,67,'S0014'),
+(123,14.00,NULL,2,68,'SA012'),
+(124,52.50,NULL,5,69,'S0020'),
+(125,17.00,3.40,2,70,'S0016'),
+(126,7.00,1.40,1,70,'SB004'),
+(127,25.50,NULL,3,71,'SA019'),
+(128,16.50,4.95,3,72,'SD007'),
+(129,15.00,4.50,3,72,'SB007'),
+(130,7.00,2.10,1,72,'SC001'),
+(131,14.00,NULL,2,73,'SB009'),
+(132,9.00,1.80,1,74,'SB012'),
+(133,8.50,1.70,1,74,'SA018'),
+(134,21.00,NULL,2,75,'SB020'),
+(135,25.50,NULL,3,76,'SC015'),
+(136,17.00,5.10,2,77,'SD017'),
+(137,18.00,5.40,2,77,'SB015'),
+(138,10.00,3.00,2,77,'SA007'),
+(139,8.50,NULL,1,78,'SA016'),
+(140,31.50,NULL,3,79,'S0015'),
+(141,34.00,NULL,4,80,'SE014'),
+(142,17.00,3.40,2,81,'SE009'),
+(143,17.00,3.40,2,81,'SA013'),
+(144,31.50,NULL,3,82,'S0015'),
+(145,18.00,3.60,2,83,'SB002'),
+(146,14.00,2.80,2,83,'SC002'),
+(147,7.50,1.50,1,84,'SD004'),
+(148,9.00,1.80,1,84,'SB011'),
+(149,18.00,3.60,2,85,'S0003'),
+(150,18.00,3.60,2,85,'SB002');
+
+
+

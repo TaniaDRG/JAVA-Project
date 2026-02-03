@@ -16,9 +16,7 @@ import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Sesion;
 
-/**
- * 
- */
+
 public class ControladorBD {
 
 	private Connection conexion;// Guarda la conexión con la base de datos.
@@ -189,10 +187,6 @@ public class ControladorBD {
 			e.printStackTrace();
 		}
 		
-		/*Collections.sort(sesionesDisponibles, 
-		    Comparator.comparing(Sesion::getHoraInicio)
-		);*/
-
 		return sesionesDisponibles;
 
 	}
