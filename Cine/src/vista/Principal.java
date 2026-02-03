@@ -381,39 +381,35 @@ public class Principal {
 	 */
 	public static void mostrarMenuOpcionesDeLogin() {
 
-		boolean salir = false;
-
-		while (!salir) {
+		int opcion = 0;
+		
+		do {
 			System.out.println("\n======== LOGIN ========");
 			System.out.println("1 - Inicie Sesión");
 			System.out.println("2 - Acceder como invitado");
 			System.out.println("3 - Registrarse");
 			System.out.println("4 - Cancelar compra");
-			int opcion = controladorES.leerOpciones(1, 4);
+			opcion = controladorES.leerOpciones(1, 4);
 
-			switch (opcion) {
+		} while (opcion == -1);
+
+		switch (opcion) {
 			case 1:
-				boolean datosCorrectos = controladorES.recogerDatosUsuarioExistente();
-				if (datosCorrectos) {
-					salir = true;
-				}
+				controladorES.recogerDatosUsuarioExistente();
 				break;
 			case 2:
 				accedeComoInvitado();
-				salir = true;
 				break;
 			case 3:
-				salir = true;
 				controladorES.recogerDatosNuevoUsuario();
 				break;
 			case 4:
-				salir = true;
 				resetearCarrito();
 				System.out.println("Compra cancelada");
 				iniciar();
 				break;
-			}
 		}
+
 	}
 
 	/**
