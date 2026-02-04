@@ -15,3 +15,20 @@ DESCUENTO APLICADO: -0,00 €
 TOTAL A PAGAR: 21,00 €
 ====================================
 
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 04/02/2026 20:42:44
+Cliente: Usuario
+----------
+Pelicula: 50 Sombras de Grey
+Fecha: 2026-02-06
+Hora: 21:30:00
+Sala: Segunda
+Entradas: 2
+Subtotal: 17,00 €
+------------------------------------
+TOTAL SIN DESCUENTO: 17,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 17,00 €
+====================================
+
