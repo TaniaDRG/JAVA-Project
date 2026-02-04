@@ -13,6 +13,15 @@ public class PruebasTest {
 
 	
 	
+	/**
+	 * /**
+	 * Método que calcula los datos necesarios a almacenar/insertar en la BD
+	 * guardandolos en su correspondiente var./obj. carritotemporal: descuento y
+	 * PrecioEntrada (tabla Entrada). compraFinal: descuentoAplicado y precioTotal
+	 * (la tabla Compra).
+	 *
+	 * @param porcentajeDescuento
+	 */
 	public static void calcularDatosTabla(double porcentajeDescuento) {
 
 		double descuentoAplicado = 0.0;

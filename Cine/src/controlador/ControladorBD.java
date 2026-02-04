@@ -28,8 +28,7 @@ public class ControladorBD {
 		boolean conexionRealizada = false;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			// Parametros para la conexion --> URL, user, pass puede hacer falta el puerto
-			// localhost:puerto/
+			
 			conexion = DriverManager.getConnection("jdbc:mysql://localhost:33060/" + this.nombreBD, "root",
 					"elorrieta");
 			conexionRealizada = true;
@@ -179,7 +178,7 @@ public class ControladorBD {
 			consulta.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -200,7 +199,7 @@ public class ControladorBD {
 	public Cliente buscarClienteBD(String dniUsuario, String contrasenaUsuario) {
 
 		Cliente clienteBuscado = new Cliente();
-		// defino la estructura de la query pues los ? son el espacio que reservo para
+	
 		String query = "SELECT DNI, NomCliente, Apellido, Correo " + "FROM Cliente " + "WHERE DNI = ? "
 				+ "AND Contraseña = AES_ENCRYPT(?, 'elorrieta')";
 
@@ -332,11 +331,11 @@ public class ControladorBD {
 				consulta.setString(5, carrito2.getSesion().getIdSesion());
 
 				consulta.executeUpdate();
-
+				// OBTENER ID AUTOGENERADO
 				ResultSet resultado = consulta.getGeneratedKeys();
 				if (resultado.next()) {
 					int idEntradaGenerado = resultado.getInt(1);
-					carrito2.getEntrada().setIdEntrada(idEntradaGenerado);// ?????
+					carrito2.getEntrada().setIdEntrada(idEntradaGenerado);
 
 				}
 

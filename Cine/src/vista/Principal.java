@@ -13,9 +13,7 @@ import modelo.Sala;
 import modelo.Sesion;
 import modelo.Compra;
 
-/**
- * 
- */
+
 public class Principal {
 
 	public static ControladorBD controlador;
@@ -380,7 +378,7 @@ public class Principal {
 	 */
 	public static void mostrarMenuOpcionesDeLogin() {
 
-		int opcion = 0;
+		int opcion;
 
 		do {
 			System.out.println("\n======== LOGIN ========");

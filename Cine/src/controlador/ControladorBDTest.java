@@ -177,10 +177,7 @@ public class ControladorBDTest {
 		controlador = new ControladorBD("cine_daw");
 		controlador.iniciarConexion();
 		ArrayList<Sesion> sesiones = controlador.buscarSesiones("GREY", "2026-02-08");
-		/*
-		 * for (int i = 0; i < sesiones.size(); i++) { assertEquals("8.50",
-		 * String.format("%.2f", sesiones.get(i).getPrecio()));
-		 */
+
 		for (Sesion s : sesiones) {
 			assertEquals(8.50, s.getPrecio(), 0.01);
 		}
@@ -213,8 +210,8 @@ public class ControladorBDTest {
 		assertTrue(controlador.insertarCliente(nuevoCliente));
 		controlador.cerrarConexion();
 	}// delete from cliente where DNI = '98765432A'
-		// delete from cliente where CORREO = 'marciano@spam.com'
 		// SELECT * FROM CLIENTE WHERE CORREO = 'marciano@spam.com'
+		// delete from cliente where CORREO = 'marciano@spam.com'
 
 	/**
 	 * Comprobamos que NO se crea un nuevo objeto-cliente al enviar unos valores
@@ -249,7 +246,7 @@ public class ControladorBDTest {
 		assertNotEquals(0, compraFinal.getIdCompra());
 		controlador.cerrarConexion();
 
-	}// delete from compra where IdCompra = 91
+	}
 
 	/**
 	 * Comprobamos que se inserte correctamente en la BD las entradas de una compra,
@@ -298,7 +295,7 @@ public class ControladorBDTest {
 
 		assertTrue(controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal));
 		controlador.cerrarConexion();
-	}
+	}// delete from compra where IdCompra = 86
 
 	/**
 	 * Comprobamos que el mét. calcularDatosTabla genera correctamente el
@@ -361,21 +358,23 @@ public class ControladorBDTest {
 	/**
 	 * Comprobamos que el método genera un fichero (está vacío)
 	 */
-	/*
-	 * @Test public void GenerarFicheroSinEntradas() {
-	 * 
-	 * PruebasTest.carritoTemporal = new ArrayList<>();
-	 * 
-	 * Cliente cliente = new Cliente(); cliente.setDNI("PruebaTXT");
-	 * 
-	 * PruebasTest.compraFinal = new Compra();
-	 * PruebasTest.compraFinal.setCliente(cliente);
-	 * 
-	 * ControladorFichero fichero = new ControladorFichero("ficheros/"); boolean
-	 * generado = fichero.escribirCompra( "test_compras.txt",
-	 * PruebasTest.carritoTemporal, cliente, PruebasTest.compraFinal );
-	 * 
-	 * assertTrue(generado); }
-	 */
+
+	@Test
+	public void GenerarFicheroSinEntradas() {
+
+		PruebasTest.carritoTemporal = new ArrayList<>();
+
+		Cliente cliente = new Cliente();
+		cliente.setDNI("PruebaTXT");
+
+		PruebasTest.compraFinal = new Compra();
+		PruebasTest.compraFinal.setCliente(cliente);
+
+		ControladorFichero fichero = new ControladorFichero("ficheros/");
+		boolean generado = fichero.escribirCompra("test_compras.txt", PruebasTest.carritoTemporal, cliente,
+				PruebasTest.compraFinal);
+
+		assertTrue(generado);
+	}
 
 }
