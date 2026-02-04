@@ -1,23 +1,6 @@
 ==========TICKET DE COMPRA==========
 Compra nº 1
-Fecha impresion: 03/02/2026 20:20:17
-Cliente: Usuario
-----------
-Pelicula: Cómo entrenar a tu dragón
-Fecha: 2026-02-04
-Hora: 21:10:00
-Sala: Octava
-Entradas: 3
-Subtotal: 16,50 €
-------------------------------------
-TOTAL SIN DESCUENTO: 16,50 €
-DESCUENTO APLICADO: -0,00 €
-TOTAL A PAGAR: 16,50 €
-====================================
-
-==========TICKET DE COMPRA==========
-Compra nº 1
-Fecha impresion: 03/02/2026 20:27:13
+Fecha impresion: 04/02/2026 19:42:47
 Cliente: Usuario
 ----------
 Pelicula: Armageddon
@@ -30,22 +13,5 @@ Subtotal: 21,00 €
 TOTAL SIN DESCUENTO: 21,00 €
 DESCUENTO APLICADO: -0,00 €
 TOTAL A PAGAR: 21,00 €
-====================================
-
-==========TICKET DE COMPRA==========
-Compra nº 2
-Fecha impresion: 03/02/2026 20:28:30
-Cliente: Usuario
-----------
-Pelicula: Cómo entrenar a tu dragón
-Fecha: 2026-02-04
-Hora: 21:10:00
-Sala: Octava
-Entradas: 3
-Subtotal: 16,50 €
-------------------------------------
-TOTAL SIN DESCUENTO: 16,50 €
-DESCUENTO APLICADO: -0,00 €
-TOTAL A PAGAR: 16,50 €
 ====================================
 

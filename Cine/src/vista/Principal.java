@@ -31,7 +31,7 @@ public class Principal {
 		System.out.println("*******************");
 		System.out.println("    BIENVENIDO  ");
 		System.out.println("*******************");
-		
+
 		controlador = new ControladorBD("cine_daw");
 		controladorES = new ControladorEntradaYSalida();
 
@@ -500,16 +500,15 @@ public class Principal {
 
 	private static void generarFichero() {
 		ControladorFichero fichero = new ControladorFichero("ficheros/");
-		
-		boolean generado = fichero.escribirCompra("compras.txt", carritoTemporal, compraFinal.getCliente(), compraFinal);
-		
-		if(generado) {
+
+		boolean generado = fichero.escribirCompra("compras.txt", carritoTemporal, compraFinal.getCliente(),
+				compraFinal);
+
+		if (generado) {
 			System.out.println("Ticket de compra generado correctamente");
 		} else {
 			System.out.println("No se pudo generar el ticket de compra");
 		}
-
-
 
 	}
 
