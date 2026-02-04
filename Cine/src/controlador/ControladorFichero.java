@@ -10,6 +10,13 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+* Clase encargada de gestionar la escritura de ficheros relacionados con las
+* compras realizadas por los clientes.
+*
+* Genera un ticket de compra en formato texto con la información del cliente,
+* sesiones, entradas y totales.
+*/
 
 public class ControladorFichero {
 	
@@ -21,6 +28,13 @@ public class ControladorFichero {
 		this.ruta = ruta;
 	}
 	
+	
+	/**
+	 * Escribe en un fichero de texto la información de una compra.
+	 *
+	 * @return true si la escritura se realiza correctamente, false en caso de error
+	 */
+
 	public boolean escribirCompra(String nombreFichero, ArrayList<Carrito> carrito, Cliente cliente, Compra compra) {
 
 	    try {
@@ -34,6 +48,13 @@ public class ControladorFichero {
 	        	fichero.createNewFile();
 	        }
 
+	        
+			
+//			 Se crea un BufferedWriter para escribir texto en un fichero.
+//			
+//			 El FileWriter indica el fichero donde se escribirá y se usa en modo append
+//			 (true) para añadir el contenido al final del archivo sin borrar lo que ya
+//			 existe.
 
 	        BufferedWriter escritor = new BufferedWriter(
 	                new FileWriter(ruta + nombreFichero, true)
