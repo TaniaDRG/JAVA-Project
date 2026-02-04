@@ -17,15 +17,13 @@ import modelo.Sesion;
 
 public class ControladorBD {
 
-	private Connection conexion;// Guarda la conexión con la base de datos.
-	private String nombreBD;// Guarda el nombre de la base de datos
+	private Connection conexion;
+	private String nombreBD;
 
-	// Constructores
 	public ControladorBD(String nombreBD) {
 		this.nombreBD = nombreBD;
 	}
 
-	// Iniciar conexion
 	public boolean iniciarConexion() {
 		boolean conexionRealizada = false;
 		try {
@@ -44,7 +42,6 @@ public class ControladorBD {
 		return conexionRealizada;
 	}
 
-	// Cerrar conexion
 	public boolean cerrarConexion() {
 		boolean Conexioncerrada = false;
 
@@ -268,15 +265,22 @@ public class ControladorBD {
 
 	}
 
+	/**
+	 * Inserta una nueva compra en la tabla compra. Tras inserción, recupera el
+	 * IdCompra generado automáticamente almacenandolo en el obj. compraFinal.
+	 * Devuelve true si la inserción fué correcta o false si se produce algún error.
+	 * 
+	 * @param compraFinal
+	 * @return true/false
+	 */
 	public boolean guardarDatosEnBDCompra(Compra compraFinal) {
 
 		String query = "INSERT INTO Compra (Fecha, Hora, PrecioTotal, DescuentoAplicado, DNI) "
 				+ "VALUES (current_date,current_time,?,?,?)";
 
 		try {
-			PreparedStatement consulta = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);// quieres la
-																											// clave
-																											// generadas
+			PreparedStatement consulta = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
 			consulta.setDouble(1, compraFinal.getPrecioTotal());
 			consulta.setDouble(2, compraFinal.getDescuentoAplicado());
 			consulta.setString(3, compraFinal.getCliente().getDNI());
@@ -301,6 +305,16 @@ public class ControladorBD {
 
 	}
 
+	/**
+	 * Inserta en la base de datos todas las entradas almacenadas en el
+	 * carritoTemporal. Obtiene el IdEntrada generado automáticamente y lo guarda en
+	 * la fila correspondiente del arrayList. Devuelve true si la inserción fué
+	 * correcta o false si se produce algún error.
+	 * 
+	 * @param carritoTemporal
+	 * @param compraFinal
+	 * @return
+	 */
 	public boolean guardarDatosEnBDEntrada(ArrayList<Carrito> carritoTemporal, Compra compraFinal) {
 
 		String query = "INSERT INTO Entrada (PrecioEntrada, Descuento, NumEspectadores, IdCompra, IdSesion) "
@@ -318,12 +332,12 @@ public class ControladorBD {
 				consulta.setString(5, carrito2.getSesion().getIdSesion());
 
 				consulta.executeUpdate();
-				// OBTENER EL ID
 
 				ResultSet resultado = consulta.getGeneratedKeys();
 				if (resultado.next()) {
 					int idEntradaGenerado = resultado.getInt(1);
-					carrito2.getEntrada().setIdEntrada(idEntradaGenerado);
+					carrito2.getEntrada().setIdEntrada(idEntradaGenerado);// ?????
+
 				}
 
 				resultado.close();

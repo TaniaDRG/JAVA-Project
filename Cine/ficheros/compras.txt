@@ -1,0 +1,51 @@
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 04/02/2026 01:55:24
+Cliente: Usuario
+----------
+Pelicula: Cómo entrenar a tu dragón
+Fecha: 2026-02-04
+Hora: 16:00:00
+Sala: Octava
+Entradas: 1
+Subtotal: 5,50 €
+------------------------------------
+TOTAL SIN DESCUENTO: 5,50 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 5,50 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 2
+Fecha impresion: 04/02/2026 01:56:43
+Cliente: Usuario
+----------
+Pelicula: El conjuro
+Fecha: 2026-02-05
+Hora: 22:20:00
+Sala: Primera
+Entradas: 2
+Subtotal: 14,00 €
+------------------------------------
+TOTAL SIN DESCUENTO: 14,00 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 14,00 €
+====================================
+
+==========TICKET DE COMPRA==========
+Compra nº 1
+Fecha impresion: 04/02/2026 01:57:37
+Cliente: Usuario
+----------
+Pelicula: Cómo entrenar a tu dragón
+Fecha: 2026-02-04
+Hora: 16:00:00
+Sala: Octava
+Entradas: 1
+Subtotal: 5,50 €
+------------------------------------
+TOTAL SIN DESCUENTO: 5,50 €
+DESCUENTO APLICADO: -0,00 €
+TOTAL A PAGAR: 5,50 €
+====================================
+

@@ -16,9 +16,6 @@ import modelo.Sesion;
 
 import vista.PruebasTest;
 
-/**
- * 
- */
 public class ControladorBDTest {
 
 	private static ControladorBD controlador;
@@ -216,8 +213,8 @@ public class ControladorBDTest {
 		assertTrue(controlador.insertarCliente(nuevoCliente));
 		controlador.cerrarConexion();
 	}// delete from cliente where DNI = '98765432A'
-	//delete from cliente where CORREO = 'marciano@spam.com'
-	//SELECT * FROM CLIENTE WHERE CORREO = 'marciano@spam.com'
+		// delete from cliente where CORREO = 'marciano@spam.com'
+		// SELECT * FROM CLIENTE WHERE CORREO = 'marciano@spam.com'
 
 	/**
 	 * Comprobamos que NO se crea un nuevo objeto-cliente al enviar unos valores
@@ -302,10 +299,10 @@ public class ControladorBDTest {
 		assertTrue(controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal));
 		controlador.cerrarConexion();
 	}
-	
-	
+
 	/**
-	 * 
+	 * Comprobamos que el mét. calcularDatosTabla genera correctamente el
+	 * precioTotal de la compra y su descuentoAplicado tras unos valores dados.
 	 */
 	@Test
 	public void CalculoPrecioTotalCompraCorrectoPruebas() {
@@ -361,32 +358,24 @@ public class ControladorBDTest {
 
 	}
 
-	
-
-	
 	/**
 	 * Comprobamos que el método genera un fichero (está vacío)
 	 */
-	/*@Test
-	public void GenerarFicheroSinEntradas() {
+	/*
+	 * @Test public void GenerarFicheroSinEntradas() {
+	 * 
+	 * PruebasTest.carritoTemporal = new ArrayList<>();
+	 * 
+	 * Cliente cliente = new Cliente(); cliente.setDNI("PruebaTXT");
+	 * 
+	 * PruebasTest.compraFinal = new Compra();
+	 * PruebasTest.compraFinal.setCliente(cliente);
+	 * 
+	 * ControladorFichero fichero = new ControladorFichero("ficheros/"); boolean
+	 * generado = fichero.escribirCompra( "test_compras.txt",
+	 * PruebasTest.carritoTemporal, cliente, PruebasTest.compraFinal );
+	 * 
+	 * assertTrue(generado); }
+	 */
 
-	    PruebasTest.carritoTemporal = new ArrayList<>();
-
-	    Cliente cliente = new Cliente();
-	    cliente.setDNI("PruebaTXT");
-
-	    PruebasTest.compraFinal = new Compra();
-	    PruebasTest.compraFinal.setCliente(cliente);
-
-	    ControladorFichero fichero = new ControladorFichero("ficheros/");
-	    boolean generado = fichero.escribirCompra(
-	        "test_compras.txt",
-	        PruebasTest.carritoTemporal,
-	        cliente,
-	        PruebasTest.compraFinal
-	    );
-
-	    assertTrue(generado); 
-	}*/
-	
 }

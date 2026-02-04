@@ -519,10 +519,11 @@ public class Principal {
 	}
 
 	/**
+	 * 
 	 * Se dirige al mét. guardarDatosEnBDCompra (enviando como parámetro
-	 * compraFinal) recibiendo true, si se ha efectuado correctamente la inserción,
-	 * para dirigirse al mét: guardarEntradasDeCompra(). Si recibe false, mensaje de
-	 * error y mét. resetearCarrito().
+	 * compraFinal) recibiendo true, si se ha efectuado correctamente la inserción
+	 * (tabla compra), para dirigirse al mét guardarEntradasDeCompra. Si recibe
+	 * false, mensaje de error y mét. resetearCarrito.
 	 * 
 	 */
 	private static void guardarCompra() {
@@ -539,6 +540,12 @@ public class Principal {
 
 	}
 
+	/**
+	 * Se dirige al mét. guardarDatosEnBDEntrada(enviando como parámetros:
+	 * compraFinal y carritoTemporal) recibiendo true, si se ha efectuado
+	 * correctamente la inserción (tabla entrada),para dirigirse al mét
+	 * deseaTickect. Si recibe false, mensaje de error y mét. resetearCarrito.
+	 */
 	private static void guardarEntradasDeCompra() {
 		boolean entradaInsertada = controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal);
 		if (entradaInsertada) {
@@ -553,6 +560,11 @@ public class Principal {
 
 	}
 
+	/**
+	 * Solicita al usuario si desea obtener un ticket de la compra, su validación se
+	 * genera en el mét.leerOpciones. Si elige si(1) se dirige al mét.
+	 * generarFichero; si elige no(2) el método retorna al mét. finalizarCompra.
+	 */
 	private static void deseaTickect() {
 
 		int ticket;
@@ -569,9 +581,12 @@ public class Principal {
 			return;
 		}
 		return;
-		// Al salir del método, el flujo continúa en finalizarCompra()
+
 	}
 
+	/**
+	 * 
+	 */
 	private static void generarFichero() {
 		ControladorFichero fichero = new ControladorFichero("ficheros/");
 
