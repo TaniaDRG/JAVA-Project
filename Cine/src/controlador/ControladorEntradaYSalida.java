@@ -22,10 +22,6 @@ public class ControladorEntradaYSalida {
 	 * @param lista = lista de elementos a elegir.
 	 * @return -1 si está fuera del rango, sino devuelve el número elegido
 	 **/
-
-	// <T> Recibir cualquier tipo de objeto/Array (Pelicula, sesion....) y poder
-	// modificarlo
-	// Tambien se puede usar <?> pero este no permite modificaciones
 	public <T> int elegirOpcion(List<T> lista) {
 		try {
 			int eleccion = Integer.valueOf(sc.nextLine());
@@ -48,7 +44,7 @@ public class ControladorEntradaYSalida {
 	 * 
 	 * @return
 	 */
-	public int numeroDeEspectadores() {// generico
+	public int numeroDeEspectadores() {
 		try {
 			int eleccion = Integer.valueOf(sc.nextLine());
 

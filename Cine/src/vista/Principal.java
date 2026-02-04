@@ -84,7 +84,7 @@ public class Principal {
 	 */
 	public static void mostrarFechasDisponiblesPeli(Pelicula peliElegida) {
 
-		System.out.println("Las fechas disponibles para la película (" + peliElegida.getNomPeli() + ") son:\n");
+		System.out.println("Las fechas disponibles para la película " + peliElegida.getNomPeli() + " son:\n");
 
 		String IdPeli = peliElegida.getIdPeli();
 		ArrayList<Sesion> FechasPeliElegida = controlador.buscarFechasPeli(IdPeli);
@@ -202,7 +202,7 @@ public class Principal {
 			System.out.println("----------------------------------------");
 			System.out.println("\nPelicula: " + carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:"
 					+ carrito2.getSesion().getFecha() + "\nHora Inicio:" + carrito2.getSesion().getHoraInicio()
-					+ "\nSala:" + carrito2.getSesion().getSala().getNomSala() + "\nPrecio:"
+					+ "\nSala:" + carrito2.getSesion().getSala().getIdSala() + "\nPrecio:"
 					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de espectadores:"
 					+ carrito2.getEntrada().getNumEspectadores());
 		}
@@ -259,14 +259,14 @@ public class Principal {
 
 			boolean nombreEncontrado = false;
 
-			// Comprobar si la Peli ya existe en arrayList
+			
 			for (int j = 0; j < nombresPeliculas.size(); j++) {
 				if (nombresPeliculas.get(j).equals(nombreActual)) {
 					nombreEncontrado = true;
 
 				}
 			}
-			// Si no estaba contado, sumamos a la lista
+			
 			if (!nombreEncontrado) {
 				nombresPeliculas.add(nombreActual);
 				peliculasDistintas++;
@@ -324,14 +324,14 @@ public class Principal {
 	 */
 	public static void mostrarResumenDeCompra() {
 
-		System.out.println("\n===== RESUMEN DE COMPRA ======");
+		System.out.println("\n======== RESUMEN DE COMPRA ========");
 
 		for (Carrito carrito2 : carritoTemporal) {
 
 			System.out.println("------------------------------");
 			System.out.println("\nPelicula: " + carrito2.getSesion().getPeli().getNomPeli() + "\nFecha:"
 					+ carrito2.getSesion().getFecha() + "\nHora:" + carrito2.getSesion().getHoraInicio() + "\nSala:"
-					+ carrito2.getSesion().getSala().getNomSala() + "\nPrecio sesión:"
+					+ carrito2.getSesion().getSala().getIdSala() + "\nPrecio sesión:"
 					+ String.format("%.2f", carrito2.getSesion().getPrecio()) + "€" + "\nNúmero de entradas:"
 					+ carrito2.getEntrada().getNumEspectadores() + "\nDescuento:"
 					+ String.format("%.2f", carrito2.getEntrada().getDescuento()) + "€");
@@ -420,7 +420,7 @@ public class Principal {
 	public static void iniciarSesion(String dniUsuario, String contraseñaUsuario) {
 
 		Cliente existeCliente = controlador.buscarClienteBD(dniUsuario, contraseñaUsuario);
-		/* guardo el resultado de la busqueda del usuario en obj existeCliente */
+	
 
 		if (existeCliente.getDNI() == null) {
 			System.out.println("DNI o contraseña incorrectos.");
@@ -519,10 +519,11 @@ public class Principal {
 	}
 
 	/**
+	 * 
 	 * Se dirige al mét. guardarDatosEnBDCompra (enviando como parámetro
-	 * compraFinal) recibiendo true, si se ha efectuado correctamente la inserción,
-	 * para dirigirse al mét: guardarEntradasDeCompra(). Si recibe false, mensaje de
-	 * error y mét. resetearCarrito().
+	 * compraFinal) recibiendo true, si se ha efectuado correctamente la inserción
+	 * (tabla compra), para dirigirse al mét guardarEntradasDeCompra. Si recibe
+	 * false, mensaje de error y mét. resetearCarrito.
 	 * 
 	 */
 	private static void guardarCompra() {
@@ -539,6 +540,12 @@ public class Principal {
 
 	}
 
+	/**
+	 * Se dirige al mét. guardarDatosEnBDEntrada(enviando como parámetros:
+	 * compraFinal y carritoTemporal) recibiendo true, si se ha efectuado
+	 * correctamente la inserción (tabla entrada),para dirigirse al mét
+	 * deseaTickect. Si recibe false, mensaje de error y mét. resetearCarrito.
+	 */
 	private static void guardarEntradasDeCompra() {
 		boolean entradaInsertada = controlador.guardarDatosEnBDEntrada(carritoTemporal, compraFinal);
 		if (entradaInsertada) {
@@ -553,6 +560,11 @@ public class Principal {
 
 	}
 
+	/**
+	 * Solicita al usuario si desea obtener un ticket de la compra, su validación se
+	 * genera en el mét.leerOpciones. Si elige si(1) se dirige al mét.
+	 * generarFichero; si elige no(2) el método retorna al mét. finalizarCompra.
+	 */
 	private static void deseaTickect() {
 
 		int ticket;
@@ -569,9 +581,12 @@ public class Principal {
 			return;
 		}
 		return;
-		// Al salir del método, el flujo continúa en finalizarCompra()
+
 	}
 
+	/**
+	 * 
+	 */
 	private static void generarFichero() {
 		ControladorFichero fichero = new ControladorFichero("ficheros/");
 

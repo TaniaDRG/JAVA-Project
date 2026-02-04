@@ -70,7 +70,7 @@ public class ControladorFichero {
 	            escritor.write("Hora: " + c.getSesion().getHoraInicio());
 	            escritor.newLine();
 
-	            escritor.write("Sala: " + c.getSesion().getSala().getNomSala());
+	            escritor.write("Sala: " + c.getSesion().getSala().getIdSala());
 	            escritor.newLine();
 
 	            escritor.write("Entradas: " + c.getEntrada().getNumEspectadores());
