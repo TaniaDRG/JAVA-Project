@@ -584,8 +584,13 @@ public class Principal {
 
 	}
 
+
 	/**
-	 * 
+	 *Genera el fichero de texto con el ticket de la compra actual.
+	 *
+	 * Crea un objeto ControladorFichero indicando la ruta donde se guardará el archivo
+	 * y llama al método escribirCompra para almacenar la información de la compra
+	 * en el fichero "compras.txt".
 	 */
 	private static void generarFichero() {
 		ControladorFichero fichero = new ControladorFichero("ficheros/");
